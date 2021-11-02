@@ -1,0 +1,97 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 13px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.custom-rounded {
+  border-radius: 1rem;
+}
+.custom-rounded-topleft {
+  border-top-left-radius: 1rem;
+}
+.custom-rounded-bottomleft {
+  border-bottom-left-radius: 1rem;
+}
+.custom-rounded-topright {
+  border-top-right-radius: 1rem;
+}
+.custom-rounded-bottomright {
+  border-bottom-right-radius: 1rem;
+}
+
+.category-left {
+  background-image: url(../Components/img/clothcarousel.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(3px);
+}
+
+a, li a {
+  text-decoration: none!important;
+  color: inherit;
+  cursor: pointer!important;
+}
+.list-style-none {
+  list-style-type: none;
+}
+
+legend {
+  float: none!important;
+  width: auto!important;
+}
+
+fieldset {
+  margin-inline-start: 2px!important;
+    margin-inline-end: 2px!important;
+    padding-block-start: 0.35em!important;
+    padding-inline-start: 0.75em!important;
+    padding-inline-end: 0.75em!important;
+    padding-block-end: 0.625em!important
+}
+
+p {
+  font-size: 0.7rem;
+}
+.input-reset {
+  border: 0;
+  outline: none;
+}
+.input-reset:focus {
+  border: 0;
+  box-shadow: none!important;
+}
+
+/* small screen  */
+@media (min-width: 576px) {
+ body {
+   font-size: 16px;
+ }
+ p {
+   font-size: 1rem;
+ }   
+}
+/* medium screen  */
+@media (min-width: 768px) {
+    
+}
+/* large screen  */
+@media (min-width: 992px) {
+    
+}
+/* xtra-large screen  */
+@media (min-width: 1200px) {
+    
+}

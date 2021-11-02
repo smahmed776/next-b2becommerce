@@ -1,0 +1,91 @@
+.slick-list, .slick-track, .slick-slide, .slick-slide div {
+    height: 100%;
+}
+
+.testimonial-div {
+    height: 360px!important;
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+.testimonial-slide {
+    height: 450px;
+}
+.testimonial-slide .slick-slide{
+    padding: 1rem;
+}
+.main-hero {
+    height: auto;
+    overflow: hidden;
+}
+/* ============================================================================
+small screen  
+============================================================================== */
+@media (min-width: 576px) {
+    .main-hero {
+        height: 420px;
+        overflow: hidden;
+    }
+    
+
+    
+    .product-control-prev {
+        /* background-color: black !important;  */
+        border-radius: 50%!important;
+        height: 40px!important;
+        width: 40px!important;
+        top: 30%!important;
+        left: -27px!important;
+        border: 2px solid white!important;
+
+        font-size: 2.5rem;
+    }
+    .product-control-next {
+        /* background-color: black !important;  */
+        border-radius: 50%!important;
+        height: 40px!important;
+        width: 40px!important;
+        top: 30%!important;
+        right: -27px!important;
+        border: 2px solid white!important;
+ 
+        font-size: 2.5rem;
+    }
+
+    .testimonial-control-prev {
+        background-color: black !important;
+        border-radius: 50%!important;
+        height: 70px!important;
+        width: 70px!important;
+        top: 40%!important;
+        left: -55px!important;
+    }
+    .testimonial-control-next {
+        background-color: black !important;
+        border-radius: 50%!important;
+        height: 70px!important;
+        width: 70px!important;
+        top: 40%!important;
+        right: -55px!important;
+    }
+}
+
+/* ===========================================================================
+medium screen  
+=============================================================================*/
+@media (min-width: 768px) {   
+
+}
+
+
+/* =========================================================================
+lg screen 
+============================================================================ */
+@media (min-width: 992px) {
+
+}
+
+/* =========================================================================
+  x-lg screen 
+============================================================================ */
+@media (min-width: 1200px) {
+}

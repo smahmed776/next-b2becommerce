@@ -1,0 +1,92 @@
+.mainnav li {
+    margin: 5px;
+}
+
+.nav-search {
+    width: 45%;
+}
+
+.nav-search input {
+    border-radius: 1.25rem;
+}
+
+.nav-search input::placeholder {
+    color: var(--bs-gray-300);
+}
+
+#fixedHeader {
+    transition: all .7s ease;
+}
+
+.makefixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+/* ============================================================================
+small screen  
+============================================================================== */
+
+@media (min-width: 576px) {
+    .top-header {
+        width: 100%;
+    }
+    .nav-search {
+        width: 55%;
+    }
+}
+
+/* ===========================================================================
+medium screen  
+=============================================================================*/
+
+@media (min-width: 768px) {
+    .top-header {
+        width: 75%;
+    }
+    .nav-search {
+        width: 30%;
+    }
+}
+
+/* =========================================================================
+lg screen 
+============================================================================ */
+
+@media (min-width: 992px) {}
+
+/* =========================================================================
+x-lg screen 
+.row-cols-lg-9>* {
+    flex: 0 0 auto;
+    width: 20%;
+}
+============================================================================ */
+
+@media (min-width: 1200px) {
+    .mainnav li {
+        margin: 5px;
+    }
+    .nav-search {
+        width: 45%;
+    }
+    .nav-search input {
+        border-radius: 1.25rem;
+    }
+    .nav-search input::placeholder {
+        color: var(--bs-gray-300);
+    }
+    #fixedHeader {
+        transition: all .7s ease;
+    }
+    .makefixed {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+}

@@ -1,0 +1,25 @@
+.footer-input {
+    width: 100%;
+}
+/* small screen  */
+@media (min-width: 576px) {
+    
+}
+/* medium screen  */
+@media (min-width: 768px) {
+    
+}
+/* large screen  */
+@media (min-width: 992px) {
+    .footer-input {
+        width: 80%;
+    }
+    
+}
+/* xtra-large screen  */
+@media (min-width: 1200px) {
+    .footer-input {
+        width: 65%;
+    }
+    
+}

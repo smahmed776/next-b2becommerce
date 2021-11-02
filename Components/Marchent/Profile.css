@@ -1,0 +1,23 @@
+.profile-stats p {
+    font-size: .6rem;
+}
+
+/* small screen  */
+@media (min-width: 576px) {
+    
+    .profile-stats p {
+        font-size: 1rem;
+    }
+}
+/* medium screen  */
+@media (min-width: 768px) {
+    
+}
+/* large screen  */
+@media (min-width: 992px) {
+    
+}
+/* xtra-large screen  */
+@media (min-width: 1200px) {
+    
+}
