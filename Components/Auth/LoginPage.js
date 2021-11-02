@@ -40,7 +40,7 @@ const LoginPage = () => {
 
             loginSpinner.current.classList.add('d-none')
             loginSubmit.current.removeAttribute('disabled')
-            console.log(error.response, error)
+            // console.log(error.response, error)
 
             invalidText([error.response?.data.message])
             setValid([])
