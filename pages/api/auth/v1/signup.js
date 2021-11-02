@@ -1,6 +1,6 @@
 import dbConnect from "../../../../server/db/dbconnect";
 import Marchent from "../../../../server/Schemas/Marchent"
-import Customer from "../../../../server/Schemas/customer";
+import Customer from "../../../../server/Schemas/Customer";
 import bcrypt from 'bcrypt'
 
 export default async function handler(req, res) {

@@ -2,7 +2,7 @@ import dbConnect from "../../../../server/db/dbconnect";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
 import Marchent from "../../../../server/Schemas/Marchent";
-import Customer from "../../../../server/Schemas/customer";
+import Customer from "../../../../server/Schemas/Customer";
 const JWT_SECRET = "salksfhklaskdjfkshalkjfjlasdlfs"
 
 const jwtToken = (id) => {
