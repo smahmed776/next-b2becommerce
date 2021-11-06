@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import Link from 'next/link'
 
-const Navigation = ({ mobile }) => {
+const Navigation = ({ mobile, session, user }) => {
+   
+    
     return (
         <Fragment>
 
@@ -37,7 +39,19 @@ const Navigation = ({ mobile }) => {
                     <Link href="/profile" passHref>
 
                         <a className="nav-link d-flex flex-column justify-content-center align-items-center">
-                            <span className="bi bi-person"></span><span>My Account</span>
+                            {!session && !user && <><span className="bi bi-person"></span><span>My Account</span></>}
+                            {user &&
+                                <>
+                                    <img src={user.image} alt={user.name} style={{height: "20px", width: "20px", borderRadius: "50%"}} />
+                                    <span>{user.name}</span>
+                                </>
+                            }
+                            {session &&
+                                <>
+                                    <img src={session.user.image} alt={session.user.name} style={{height: "20px", width: "20px", borderRadius: "50%"}} />
+                                    <span>{session.user.name}</span>
+                                </>
+                            }
                         </a>
                     </Link>
                 </li>

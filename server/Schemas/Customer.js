@@ -23,12 +23,15 @@ const customerSchema = new mongoose.Schema({
         },
         required: true
     },
+    image: {
+        type: String,
+        default: "https://png.pngitem.com/pimgs/s/506-5067022_sweet-shap-profile-placeholder-hd-png-download.png"
+    },
     country: {
         type: String,
     },
     phone: {
         type: Number,
-        required: true,
     },
     joined: {
         type: Date,
