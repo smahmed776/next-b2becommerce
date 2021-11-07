@@ -7,7 +7,7 @@ import SellerHomepage from './SellerHomepage';
 import LiveStreams from './LiveStrams';
 
 
-const MarchentPage = ({ home, about, product, live }) => {
+const MarchentPage = ({user, home, about, product, live }) => {
 
 
     const [toShowAbout, setToshowAbout] = useState(about)
@@ -211,10 +211,10 @@ const MarchentPage = ({ home, about, product, live }) => {
 
             {/* Components  */}
 
-            <About show={toShowAbout} />
-            <SellerProducts show={toShowProduct} />
-            <SellerHomepage show={toShowHome} />
-            <LiveStreams show={toShowLive} />
+            <About show={toShowAbout} user={user} />
+            <SellerProducts show={toShowProduct} user={user} />
+            <SellerHomepage show={toShowHome} user={user} />
+            <LiveStreams show={toShowLive} user={user} />
 
 
 

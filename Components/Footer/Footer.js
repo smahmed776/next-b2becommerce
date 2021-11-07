@@ -19,9 +19,9 @@ const Footer = () => {
                             </p>
                         </div>
                         <form action="#">
-                            <div className="col d-flex justify-content-center align-items-center px-0 mb-4 bg-white overflow-hidden" style={{ borderRadius: "2rem", height: "40px" }}>
-                                <input type="email" className="form-control rounded footer-input input-reset" style={{ width: "87%", height: "100%", border: "0" }} required />
-                                <button type="submit" className="btn btn-primary" style={{ borderRadius: "2rem", width: "12%", height: "90%" }}>
+                            <div className="col d-flex justify-content-center align-items-center px-0 mb-4 bg-white overflow-hidden subscribeInp" style={{ borderRadius: "2rem", height: "40px" }}>
+                                <input type="email" className="form-control rounded footer-input input-reset"  required />
+                                <button type="submit" className="btn btn-primary" >
                                     Subscribe
                                 </button>
                             </div>

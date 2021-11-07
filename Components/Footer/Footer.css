@@ -1,25 +1,51 @@
 .footer-input {
-    width: 100%;
+  width: 100%;
+}
+.subscribeInp input {
+  width: 70%;
+  height: 100%;
+  border: 0;
+}
+.subscribeInp button {
+  border-radius: 2rem;
+  width: 30%;
+  height: 90%;
 }
 /* small screen  */
 @media (min-width: 576px) {
-    
+    .subscribeInp input {
+      width: 80%;
+      height: 100%;
+      border: 0;
+    }
+    .subscribeInp button {
+      border-radius: 2rem;
+      width: 20%;
+      height: 90%;
+    }
 }
 /* medium screen  */
 @media (min-width: 768px) {
-    
+    .subscribeInp input {
+      width: 87%;
+      height: 100%;
+      border: 0;
+    }
+    .subscribeInp button {
+      border-radius: 2rem;
+      width: 12%;
+      height: 90%;
+    }
 }
 /* large screen  */
 @media (min-width: 992px) {
-    .footer-input {
-        width: 80%;
-    }
-    
+  .footer-input {
+    width: 80%;
+  }
 }
 /* xtra-large screen  */
 @media (min-width: 1200px) {
-    .footer-input {
-        width: 65%;
-    }
-    
+  .footer-input {
+    width: 65%;
+  }
 }

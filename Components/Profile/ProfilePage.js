@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import API from "../API";
 
@@ -112,7 +112,7 @@ const ProfilePage = ({ user }) => {
             <div className="col-12 d-flex justify-content-center align-items-center p-2">
               <div
                 className="rounded-pill p-2 bg-light position-relative"
-                style={{ height: "120px", width: "120px" }}
+                style={{ height: "135px", width: "135px" }}
               >
                 {user && (
                   <img
@@ -122,7 +122,7 @@ const ProfilePage = ({ user }) => {
                       height: "100%",
                       width: "100%",
                       borderRadius: "50%",
-                      objectFit: "cover",
+                      objectFit: "cover"
                     }}
                   />
                 )}
@@ -188,7 +188,7 @@ const ProfilePage = ({ user }) => {
                       className="form-control ps-2"
                       disabled
                       name="phone"
-                      placeholder="+4401245002451"
+                      placeholder={user ? user.phone ? user.phone : "Add a number" : "+01XXXXXXXXXX"}
                     />
                   </div>
                 </div>
@@ -240,9 +240,10 @@ const ProfilePage = ({ user }) => {
   );
 };
 
-
 const ProfileModal = () => {
-  const [img, setImg] = useState('')
+  const [finalImage, setFinalImage] = useState("");
+  const [imgUrl, setImgUrl] = useState('');
+  const [img, setImg] = useState("");
   const chngProfilebtn = useRef();
   const setProfSpinner = useRef();
   const getImage = (e) => {
@@ -254,7 +255,20 @@ const ProfileModal = () => {
       Reader.readAsDataURL(e.target.files[0]);
 
       chngProfilebtn.current.removeAttribute("disabled");
-      
+    }
+  };
+
+  const handleURL = (e) => {
+    const value = e.target.value;
+    const pattern = {
+      http: /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/.[-a-zA-Z0-9@:%_\+.~#?&=]{0,256}\.*/g
+    };
+
+    if (value.match(pattern.http)) {
+      setImgUrl(value)
+      chngProfilebtn.current.removeAttribute("disabled");
+    } else {
+      chngProfilebtn.current.setAttribute("disabled", "true");
     }
   };
 
@@ -263,47 +277,105 @@ const ProfileModal = () => {
     try {
       chngProfilebtn.current.setAttribute("disabled", "true");
       setProfSpinner.current.classList.remove("d-none");
+      if (!finalImage ) return;
+      
       const body = {
-        image: img,
+        image: finalImage,
       };
       const option = {
         headers: {
           "Content-Type": "application/json"
         },
       };
-      const res = await API.put("/updateuser", body, option);
-      console.log(res);
+      await API.put("/updateuser", body, option);
       window.location.replace("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(()=>{
+    if(imgUrl){
+      setFinalImage(imgUrl)
+    } else if (img) {
+      setFinalImage(img)
+    }
+  }, [img, imgUrl])
   return (
-    <div className="modal fade" id="changeProfile" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="changeProfileLabel" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="staticBackdropLabel">Change your profile picture</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form action="" id="changeProfilePic" onSubmit={e => setProfilePic(e)}>
-                                <input type="file" className="form-control" onChange={e => getImage(e)} placeholder="Change Profile Picture" />
-                            </form>
-                            <div className="p-3">
-                                <img src={img} alt="" style={{ maxHeight: "250px", maxWidth: "100%" }} />
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="submit" ref={chngProfilebtn} form="changeProfilePic" disabled className="btn btn-primary">
-                                <span className="spinner-border spinner-border-sm me-3 d-none" ref={setProfSpinner} role="status" aria-hidden="true"></span>
-                                Change Profile Picture
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <div
+      className="modal fade"
+      id="changeProfile"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabIndex="-1"
+      aria-labelledby="changeProfileLabel"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="staticBackdropLabel">
+              Change your profile picture
+            </h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="modal-body">
+            <form
+              action=""
+              id="changeProfilePic"
+              onSubmit={(e) => setProfilePic(e)}
+            >
+              <input
+                type="file"
+                className="form-control"
+                onChange={(e) => getImage(e)}
+                placeholder="Change Profile Picture"
+              />
+            </form>
+            <div className="p-3">
+              <img
+                src={img}
+                alt=""
+                style={{ maxHeight: "250px", maxWidth: "100%" }}
+              />
             </div>
-  )
-}
+            <div className="p-3">
+              <p className="p-1">Image URL :</p>
+              <input
+                type="url"
+                placeholder="www.example.com/profile.jpg  or  example.com/pic.jpg"
+                className="form-control"
+                onKeyUp={(e) => handleURL(e)}
+                form="changeProfilePic"
+              />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="submit"
+              ref={chngProfilebtn}
+              form="changeProfilePic"
+              disabled
+              className="btn btn-primary"
+            >
+              <span
+                className="spinner-border spinner-border-sm me-3 d-none"
+                ref={setProfSpinner}
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Change Profile Picture
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ProfilePage;

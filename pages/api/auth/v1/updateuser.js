@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import dbConnect from "../../../../server/db/dbconnect";
 import Customer from "../../../../server/Schemas/Customer";
 import Marchent from "../../../../server/Schemas/Marchent";
+import vendorprofile from "../../../../server/Schemas/vendorprofile";
 
 const JWT_SECRET = "salksfhklaskdjfkshalkjfjlasdlfs";
 
@@ -26,7 +27,9 @@ export default async function handleLogOut(req, res) {
         await Customer.findOneAndUpdate(
           { _id: decode.id },
           {
-            image: image
+            $set: {
+              image: image
+            }
           },
           { new: true }
         );
@@ -35,10 +38,12 @@ export default async function handleLogOut(req, res) {
         });
       }
       if (decode.type === "marchent") {
-        await Marchent.findOneAndUpdate(
-          { _id: decode.id },
+        await vendorprofile.findOneAndUpdate(
+          { vendorId: decode.id },
           {
-            profile: { image: image }
+            $set: {
+              "profile.image": image
+            }
           },
           { new: true }
         );

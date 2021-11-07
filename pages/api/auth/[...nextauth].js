@@ -12,9 +12,6 @@ export default async function auth(req, res) {
       }),
       // ...add more providers here
     ],
-    adapter: MongoDBAdapter({
-      db: (await clientPromise).db('imponexpo'),
-    }),
     pages: {
       signIn: "/login",
       signOut: "/auth/signout",

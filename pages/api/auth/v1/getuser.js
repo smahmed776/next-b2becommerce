@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import Marchent from "../../../../server/Schemas/Marchent";
 import Customer from "../../../../server/Schemas/Customer";
 import cookie from "cookie";
+import vendorprofile from "../../../../server/Schemas/vendorprofile";
 
 const JWT_SECRET = "salksfhklaskdjfkshalkjfjlasdlfs";
 
@@ -28,6 +29,7 @@ export default async function getUser(req, res) {
           email: getCustomer.email,
           image: getCustomer.image,
           country: getCustomer.country,
+          type: decode.type
         };
         res.status(200).json({
           type: decode.type,
@@ -37,12 +39,15 @@ export default async function getUser(req, res) {
       }
       if (decode?.type === "marchent") {
         const getMarchent = await Marchent.findById(decode.id);
+        const getvendorprofile = await vendorprofile.find({vendorId: decode.id})
         const user = {
+          id: decode.id,
           name: `${getMarchent.name.firstName} ${getMarchent.name.lastName}`,
           email: getMarchent.email,
-          image: getMarchent.profile.image,
-          coverImage: getMarchent.profile.coverImage,
+          image: getvendorprofile[0].profile.image,
+          coverImage: getvendorprofile[0].profile.coverImage,
           country: getMarchent.country,
+          type: decode.type
         };
         res.status(200).json({
           type: decode.type,
