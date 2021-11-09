@@ -130,8 +130,11 @@ const AddProductModal = ({ user }) => {
   const addProductbtn = useRef();
   const addProductSpinner = useRef();
   const productFormref = useRef();
+
   const onSubmit = async data => {
     try {
+      addProductbtn.current.setAttribute("disabled", "true");
+      addProductSpinner.current.classList.remove("d-none");
       const {
         name,
         product_information,
@@ -147,18 +150,21 @@ const AddProductModal = ({ user }) => {
         pricing,
         listing_price,
         full_description,
-        images: finalImage,
-      }
-     
-      const res = await API.post("/addproduct", dataObj, {
+        images: finalImage
+      };
+      await API.post("/addproduct", dataObj, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user.id}`
+          Authorization: `Bearer ${user.id}`
         }
       });
-      console.log(res)
+      productFormref.current.reset();
+      addProductSpinner.current.classList.add("d-none");
+      addProductbtn.current.removeAttribute("disabled");
     } catch (error) {
-      console.log(error);
+      addProductSpinner.current.classList.add("d-none");
+      addProductbtn.current.removeAttribute("disabled");
+      console.log(error, error.response);
     }
   };
 
@@ -188,7 +194,6 @@ const AddProductModal = ({ user }) => {
     }
   };
 
-  
   useEffect(
     () => {
       if (imgUrl.length > 0) {
@@ -199,7 +204,6 @@ const AddProductModal = ({ user }) => {
     },
     [img, imgUrl]
   );
-
 
   return (
     <div
@@ -242,6 +246,7 @@ const AddProductModal = ({ user }) => {
                     className="form-control"
                     {...register("name")}
                     placeholder="Product name.."
+                    required
                   />
                 </div>
 
@@ -325,6 +330,7 @@ const AddProductModal = ({ user }) => {
                     id="pricing"
                     placeholder="Product price"
                     className="form-control"
+                    required
                   />
                 </div>
 
@@ -365,14 +371,10 @@ const AddProductModal = ({ user }) => {
                       {...register("product_category")}
                       id="productcategoty"
                       className="form-select"
+                      required
                     >
                       <option value="electronics">Electronics</option>
                       <option value="baby">Baby items</option>
-                      <option value="Sp">Spain</option>
-                      <option value="UAE">United Arab Emirates</option>
-                      <option value="In">India</option>
-                      <option value="Jp">Japan</option>
-                      <option value="Pak">Pakistan</option>
                     </select>
                   </div>
                 </div>
@@ -384,7 +386,6 @@ const AddProductModal = ({ user }) => {
               type="submit"
               ref={addProductbtn}
               form="addProductForm"
-              
               className="btn btn-primary"
             >
               <span
