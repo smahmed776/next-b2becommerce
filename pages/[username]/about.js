@@ -18,6 +18,7 @@ export default function about({ data }) {
 
 export async function getStaticProps({ params: { username }, query }) {
   console.log(username)
+  await dbConnect()
   const getProducts = await vendorprofile.findOne({
     username: 'admin'
   });
@@ -45,7 +46,7 @@ export async function getStaticProps({ params: { username }, query }) {
 }
 
 export async function getStaticPaths(context) {
-  dbConnect();
+ await dbConnect();
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 

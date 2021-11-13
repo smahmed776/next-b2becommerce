@@ -16,6 +16,7 @@ export default function live({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
+  await dbConnect()
   const getProducts = await vendorprofile.findOne({ username });
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
@@ -41,7 +42,7 @@ export async function getStaticProps({ params: { username } }) {
 }
 
 export async function getStaticPaths(context) {
-  dbConnect();
+ await dbConnect();
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 

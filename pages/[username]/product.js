@@ -22,6 +22,7 @@ export default function product({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
+  await dbConnect()
   const getProducts = await vendorprofile.findOne({ username });
   const getCategories = await categories.find();
   const categoriesArr = getCategories.map((category) => category.name);
@@ -50,7 +51,7 @@ export async function getStaticProps({ params: { username } }) {
 }
 
 export async function getStaticPaths(context) {
-  dbConnect();
+  await dbConnect();
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 
