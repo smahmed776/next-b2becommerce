@@ -303,10 +303,10 @@ const Header = ({ children }) => {
             </button>
 
             <div className="navbar navbar-expand-md navbar-light bg-white d-none d-lg-flex py-0">
-              <Navigation mobile={true} session={session} user={user} />
+              <Navigation mobile={true} session={session} user={false} />
             </div>
           </nav>
-          <NavOffcanvas user={user} isLoading={isLoading} logOut={logOut} />
+          <NavOffcanvas user={false} isLoading={isLoading} logOut={logOut} />
         </div>
 
         <div className="bg-white container-fluid px-2 px-xl-5 mt-2">
