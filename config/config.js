@@ -1,0 +1,1 @@
+export const Server_URL = process.env.NODE_ENV === 'production'? "https://b2becommerce.vercel.app" : "http://localhost:3000";

@@ -25,6 +25,63 @@
     left: 0;
     z-index: 1030;
 }
+.dropdown-toggle::after{
+    display: none;
+}
+
+.account-dropdown {
+    left: auto!important;
+    right: 0 !important;
+}
+
+/* category offcanvas  */
+
+.nav-offcanvas {
+    width: 75vw!important;
+  }
+  
+  .offcanvas-close {
+    position: absolute;
+    top: 2%;
+    right: -28%;
+    height: 3rem;
+    width: 3rem;
+    padding: .8rem;
+  }
+  
+  .navoffcanvasbtn:focus {
+    box-shadow: none!important;
+  }
+  
+  .subCat {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(220%);
+    transition: all .3s ease;
+  }
+  
+  .subCatShow {
+    transform: none;
+  }
+  
+  .mainCat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: transform .3s ease;
+  }
+  
+  .mainCatShow {
+    transform: none;
+  }
+  
+
 
 /* ============================================================================
 small screen  

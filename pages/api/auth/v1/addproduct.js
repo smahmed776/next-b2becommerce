@@ -1,7 +1,7 @@
 import dbConnect from "../../../../server/db/dbconnect";
-import products from "../../../../server/Schemas/products";
 import vendorprofile from "../../../../server/Schemas/vendorprofile";
-import mongoose from "mongoose";
+import categories from "../../../../server/Schemas/categories";
+import products from "../../../../server/Schemas/products";
 
 export default async function getUser(req, res) {
   await dbConnect();
@@ -22,6 +22,21 @@ export default async function getUser(req, res) {
       const getvendorprofile = await vendorprofile.findOne({
         vendorId: vendor_id
       });
+      const addNewProduct = await new products({
+        name,
+        product_category,
+        product_information,
+        pricing,
+        listing_price,
+        full_description,
+        images,
+        seller_id: vendor_id,
+        seller_name: getvendorprofile.companyName,
+        average_rating: 0
+      });
+      await addNewProduct.save();
+
+      const newProduct = await products.findOne({ name: name });
       getvendorprofile.profile.home.products.push({
         name,
         product_category,
@@ -31,7 +46,7 @@ export default async function getUser(req, res) {
         full_description,
         images,
         average_rating: 0,
-        id: await mongoose.Types.ObjectId()
+        id: newProduct._id
       });
       await vendorprofile.findOneAndUpdate(
         { vendorId: vendor_id },
@@ -42,14 +57,14 @@ export default async function getUser(req, res) {
         },
         { new: true }
       );
-      if (await products.findOne({ name: product_category })) {
+      if (await categories.findOne({ name: product_category })) {
         const getNewVendor = await vendorprofile.findOne({
           vendorId: vendor_id
         });
         const getProductID = getNewVendor.profile.home.products.filter(
           (i) => i.name === name
         );
-        await products.findOneAndUpdate(
+        await categories.findOneAndUpdate(
           { name: product_category },
           {
             $push: {
@@ -77,7 +92,7 @@ export default async function getUser(req, res) {
         const getProductID = getNewVendor.profile.home.products.filter(
           (i) => i.name === name
         );
-        const createCategory = await new products({
+        const createCategory = await new categories({
           name: product_category,
           products: [
             {
@@ -95,7 +110,7 @@ export default async function getUser(req, res) {
             }
           ]
         });
-        createCategory.save();
+        await createCategory.save();
       }
       res.status(200).json({ message: "product Added" });
     } catch (error) {

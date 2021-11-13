@@ -1,5 +1,5 @@
 import dbConnect from "../../../../server/db/dbconnect";
-import products from "../../../../server/Schemas/products";
+import categories from "../../../../server/Schemas/categories";
 
 export default async function getUser(req, res) {
   await dbConnect();
@@ -8,7 +8,7 @@ export default async function getUser(req, res) {
       const {
         name,
       } = req.body;
-      const createCategory = await new products({
+      const createCategory = await new categories({
         name
       })
       await createCategory.save()

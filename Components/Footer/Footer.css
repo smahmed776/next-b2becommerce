@@ -2,13 +2,13 @@
   width: 100%;
 }
 .subscribeInp input {
-  width: 70%;
+  width: 72%;
   height: 100%;
   border: 0;
 }
 .subscribeInp button {
   border-radius: 2rem;
-  width: 30%;
+  width: 27%;
   height: 90%;
 }
 /* small screen  */

@@ -10,7 +10,7 @@ const JWT_SECRET = "salksfhklaskdjfkshalkjfjlasdlfs";
 export default async function getUser(req, res) {
   await dbConnect();
   if (req.method === "GET") {
-    const isCookie = cookie.parse(req.headers.cookie);
+    const isCookie = req.headers.cookie && cookie.parse(req.headers.cookie);
     const jsonToken = isCookie && isCookie.jwt;
     if (jsonToken) {
       let decode= {};
@@ -47,7 +47,8 @@ export default async function getUser(req, res) {
           image: getvendorprofile[0].profile.image,
           coverImage: getvendorprofile[0].profile.coverImage,
           country: getMarchent.country,
-          type: decode.type
+          type: decode.type,
+          username: getMarchent.username
         };
         res.status(200).json({
           type: decode.type,

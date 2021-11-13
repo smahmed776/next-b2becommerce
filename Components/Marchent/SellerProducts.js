@@ -1,15 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import SingleProduct from "../Product/SingleProduct";
 import shoeblack from "../img/shoeblack.png";
 import shoewhite from "../img/shoewhite.png";
 import { product } from "../dummydata/ProductDummy";
 import { useForm } from "react-hook-form";
 import API from "../API";
+import { AuthContext } from "../GlobalContext/authContext";
+import { useRouter } from "next/router";
 
-const SellerProducts = ({ show, user }) => {
+const SellerProducts = ({ show, user, data, isFound }) => {
   const [newProduct, setNewProduct] = useState([]);
-
-  const productId = url => {
+  const Router = useRouter()
+  const productId = (url) => {
     const productUrl = url;
     const urlStr = productUrl.toString();
     const firstSide = urlStr.substring(urlStr.indexOf("/dp/") + 4);
@@ -17,12 +19,12 @@ const SellerProducts = ({ show, user }) => {
     const pid = firstSide.replace(lastSide, "");
     return pid;
   };
-
   useEffect(() => {
     if (product) {
       setNewProduct([...product.results]);
     }
   }, []);
+
   return (
     <div className={show ? "d-block" : "d-none"}>
       <AddProductModal user={user} />
@@ -30,8 +32,7 @@ const SellerProducts = ({ show, user }) => {
         {/* filters  */}
 
         <div className="row m-0 gx-1 gy-3 w-100">
-          {user &&
-            user.type === "marchent" &&
+          {user?.username === Router.query.username && user?.type === "marchent" && (
             <div className="col-12">
               <div className="p-2 d-flex justify-content-end">
                 <button
@@ -43,11 +44,12 @@ const SellerProducts = ({ show, user }) => {
                   <span
                     className="bi bi-plus pe-2"
                     style={{ pointerEvent: "none" }}
-                  />{" "}
+                  />
                   Add New Product
                 </button>
               </div>
-            </div>}
+            </div>
+          )}
 
           <div className="col-12 col-md-4 col-lg-3">
             <div className="border bg-white rounded">
@@ -102,8 +104,19 @@ const SellerProducts = ({ show, user }) => {
             </h5>
             <div className="border rounded bg-white p-1 p-lg-3">
               <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 gy-3 px-5 px-sm-0 m-0 w-100">
-                {newProduct.length > 0 &&
-                  newProduct.map(product =>
+                {data?.product?.length > 0 &&
+                  data.product.map((product) => (
+                    <SingleProduct
+                      imageText={product.images[0]}
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      rating={product.stars}
+                      price={`$${product.pricing}`}
+                    />
+                  ))}
+                {/* {newProduct.length > 0 &&
+                  newProduct.map((product) => (
                     <SingleProduct
                       imageText={product.image}
                       key={product.id}
@@ -112,7 +125,7 @@ const SellerProducts = ({ show, user }) => {
                       rating={product.stars}
                       price={product.price_string}
                     />
-                  )}
+                  ))} */}
               </div>
             </div>
           </div>
@@ -130,8 +143,10 @@ const AddProductModal = ({ user }) => {
   const addProductbtn = useRef();
   const addProductSpinner = useRef();
   const productFormref = useRef();
+  const { categoriesInfo } = useContext(AuthContext);
+  const [categories] = categoriesInfo;
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     try {
       addProductbtn.current.setAttribute("disabled", "true");
       addProductSpinner.current.classList.remove("d-none");
@@ -159,6 +174,9 @@ const AddProductModal = ({ user }) => {
         }
       });
       productFormref.current.reset();
+      setFinalImage([])
+      setImg([])
+      setImgUrl([])
       addProductSpinner.current.classList.add("d-none");
       addProductbtn.current.removeAttribute("disabled");
     } catch (error) {
@@ -168,11 +186,11 @@ const AddProductModal = ({ user }) => {
     }
   };
 
-  const getImage = e => {
+  const getImage = (e) => {
     if (e.target.files.length > 0) {
       const Reader = new FileReader();
-      Reader.onload = e => {
-        setImg(prevImg => [...prevImg, e.target.result]);
+      Reader.onload = (e) => {
+        setImg((prevImg) => [...prevImg, e.target.result]);
       };
       Reader.readAsDataURL(e.target.files[0]);
 
@@ -180,30 +198,27 @@ const AddProductModal = ({ user }) => {
     }
   };
 
-  const handleURL = e => {
+  const handleURL = (e) => {
     const value = e.target.value;
     const pattern = {
       http: /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/.[-a-zA-Z0-9@:%_\+.~#?&=]{0,256}\.*/g
     };
 
     if (value.match(pattern.http)) {
-      setImgUrl(prevImgUrl => [...prevImgUrl, e.target.value]);
+      setImgUrl((prevImgUrl) => [...prevImgUrl, e.target.value]);
       addProductbtn.current.removeAttribute("disabled");
     } else {
       addProductbtn.current.setAttribute("disabled", "true");
     }
   };
 
-  useEffect(
-    () => {
-      if (imgUrl.length > 0) {
-        setFinalImage(imgUrl);
-      } else if (img.length > 0) {
-        setFinalImage(img);
-      }
-    },
-    [img, imgUrl]
-  );
+  useEffect(() => {
+    if (imgUrl.length > 0) {
+      setFinalImage(imgUrl);
+    } else if (img.length > 0) {
+      setFinalImage(img);
+    }
+  }, [img, imgUrl]);
 
   return (
     <div
@@ -272,7 +287,7 @@ const AddProductModal = ({ user }) => {
                     type="file"
                     id="productimage"
                     className="form-control"
-                    onChange={e => getImage(e)}
+                    onChange={(e) => getImage(e)}
                     placeholder="Product Image.."
                   />
                   <div className="d-flex justify-content-center align-items-center">
@@ -288,12 +303,12 @@ const AddProductModal = ({ user }) => {
                     name="producturl"
                     id="producturl"
                     className="form-control"
-                    onChange={e => handleURL(e)}
+                    onChange={(e) => handleURL(e)}
                   />
                   <div className="p-3">
                     <div className="row row-cols-2 m-0 gx-2 gy-3 w-100">
                       {imgUrl &&
-                        imgUrl.map(i =>
+                        imgUrl.map((i) => (
                           <div className="col" key={i}>
                             <img
                               src={i}
@@ -301,13 +316,13 @@ const AddProductModal = ({ user }) => {
                               style={{ maxHeight: "250px", maxWidth: "100%" }}
                             />
                           </div>
-                        )}
+                        ))}
                     </div>
                   </div>
                   <div className="p-3">
                     <div className="row row-cols-2 m-0 gx-2 gy-3 w-100">
                       {img &&
-                        img.map(i =>
+                        img.map((i) => (
                           <div className="col" key={i}>
                             <img
                               src={i}
@@ -315,7 +330,7 @@ const AddProductModal = ({ user }) => {
                               style={{ maxHeight: "250px", maxWidth: "100%" }}
                             />
                           </div>
-                        )}
+                        ))}
                     </div>
                   </div>
                 </div>
@@ -367,15 +382,20 @@ const AddProductModal = ({ user }) => {
                     <label className="form-label" htmlFor="productcategory">
                       Product Category
                     </label>
-                    <select
+                    <input
+                      className="form-control"
                       {...register("product_category")}
-                      id="productcategoty"
-                      className="form-select"
+                      list="datalistOptions"
+                      id="productcategory"
+                      placeholder="Search category..."
                       required
-                    >
-                      <option value="electronics">Electronics</option>
-                      <option value="baby">Baby items</option>
-                    </select>
+                    />
+                    <datalist id="datalistOptions">
+                      {categories.length > 0 &&
+                        categories.map((category, index) => (
+                          <option value={category} key={index}/>
+                        ))}
+                    </datalist>
                   </div>
                 </div>
               </div>
