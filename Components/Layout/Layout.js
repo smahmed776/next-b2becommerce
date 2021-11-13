@@ -1,15 +1,11 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { useSession } from "next-auth/react";
 import API from "../API";
-import { AuthContext } from "../GlobalContext/authContext";
 
 const Layout = (props) => {
   const { data: session } = useSession();
-  const { customerInfo, marchentInfo } = useContext(AuthContext);
-  const [customer] = customerInfo;
-  const [marchent] = marchentInfo;
 
   async function registerUser() {
     try {
@@ -36,7 +32,7 @@ const Layout = (props) => {
   }, [session]);
   return (
     <Fragment>
-      <Header user={customer.length > 0 ? customer[0] : marchent[0]}>
+      <Header>
         <main className="bg-light">{props.children}</main>
       </Header>
       <Footer />

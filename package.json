@@ -36,8 +36,9 @@
     "react-hook-form": "^7.17.4",
     "react-slick": "^0.28.1",
     "slick-carousel": "^1.8.1",
+    "swr": "^1.0.1",
     "video-react": "^0.14.1",
-    "webpack": "^4.46.0"
+    "webpack": "^5.64.0"
   },
   "devDependencies": {
     "eslint": "8.0.1",

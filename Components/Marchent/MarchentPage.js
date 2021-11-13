@@ -252,7 +252,7 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
       <SellerProducts
         show={toShowProduct}
         user={user}
-        data={data}
+        datass={data}
         isFound={isFound}
       />
       <SellerHomepage show={toShowHome} user={user} data={data} />

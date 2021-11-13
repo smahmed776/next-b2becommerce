@@ -1,10 +1,8 @@
 import MarchentPage from "../../Components/Marchent/MarchentPage";
-import { Server_URL } from "../../config/config";
 import dbConnect from "../../server/db/dbconnect";
 import vendorprofile from "../../server/Schemas/vendorprofile";
 
 export default function about({ data }) {
-
   return (
     <MarchentPage
       data={data}
@@ -16,11 +14,10 @@ export default function about({ data }) {
   );
 }
 
-export async function getStaticProps({ params: { username }, query }) {
-  console.log(username)
-  await dbConnect()
+export async function getStaticProps({ params: { username } }) {
+  await dbConnect();
   const getProducts = await vendorprofile.findOne({
-    username: 'admin'
+    username
   });
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
@@ -33,7 +30,7 @@ export async function getStaticProps({ params: { username }, query }) {
     totalProducts: getProducts.profile.home.products.length,
     about: getProducts.profile.home.about || ""
   });
-  const data = JSON.parse(about)
+  const data = JSON.parse(about);
   if (!data) {
     return {
       notFound: true
@@ -46,7 +43,7 @@ export async function getStaticProps({ params: { username }, query }) {
 }
 
 export async function getStaticPaths(context) {
- await dbConnect();
+  await dbConnect();
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 
@@ -54,6 +51,6 @@ export async function getStaticPaths(context) {
 
   return {
     paths,
-    fallback: "blocking" // will be passed to the page component as props
+    fallback: true, // will be passed to the page component as props
   };
 }

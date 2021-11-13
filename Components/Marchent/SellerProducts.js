@@ -1,30 +1,216 @@
 import React, { useEffect, useState, useRef } from "react";
 import SingleProduct from "../Product/SingleProduct";
-import { product } from "../dummydata/ProductDummy";
 import { useForm } from "react-hook-form";
 import API from "../API";
 import { useRouter } from "next/router";
+import { useUser } from "../GlobalContext/useuser";
 
-const SellerProducts = ({ show, user, data }) => {
-  const [newProduct, setNewProduct] = useState([]);
+const SellerProducts = ({ show, user, datass }) => {
   const Router = useRouter();
-  // const productId = (url) => {
-  //   const productUrl = url;
-  //   const urlStr = productUrl.toString();
-  //   const firstSide = urlStr.substring(urlStr.indexOf("/dp/") + 4);
-  //   const lastSide = firstSide.substring(firstSide.indexOf("/ref"));
-  //   const pid = firstSide.replace(lastSide, "");
-  //   return pid;
-  // };
-  useEffect(() => {
-    if (product) {
-      setNewProduct([...product.results]);
-    }
-  }, []);
+  const { username } = Router.query;
+
+  const { data, isLoading, isError } = useUser(
+    "product",
+    "seller/product",
+    username
+  );
+  if (isError) {
+    return (
+      <div className={show ? "d-block" : "d-none"}>
+        <AddProductModal user={user} />
+        <div className="p-1 p-lg-3">
+          {/* filters  */}
+
+          <div className="row m-0 gx-1 gy-3 w-100">
+            {user?.username === Router.query.username &&
+              user?.type === "marchent" && (
+                <div className="col-12">
+                  <div className="p-2 d-flex justify-content-end">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addProduct"
+                    >
+                      <span
+                        className="bi bi-plus pe-2"
+                        style={{ pointerEvent: "none" }}
+                      />
+                      Add New Product
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            <div className="col-12 col-md-4 col-lg-3">
+              <div className="border bg-white rounded">
+                <div className="border border-bottom bg-light p-2">
+                  <p className="text-dark m-0">All Filters</p>
+                </div>
+                <div className="p-2">
+                  <p className="text-muted">Related Category</p>
+                  <ul className="d-flex flex-md-column flex-row flex-wrap list-style-none">
+                    <li className="p-2">
+                      <a href="">Men's Formal shoes</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">sandals</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Men's Sneakers</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Boy's Formal shoes</a>
+                    </li>
+                  </ul>
+                  <hr />
+                </div>
+
+                <div className="p-2">
+                  <p className="text-muted">Related Category</p>
+                  <ul className="d-flex flex-md-column flex-row flex-wrap list-style-none">
+                    <li className="p-2">
+                      <a href="">Men's Formal shoes</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">sandals</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Men's Sneakers</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Boy's Formal shoes</a>
+                    </li>
+                  </ul>
+                  <hr />
+                </div>
+              </div>
+            </div>
+
+            {/* products  */}
+
+            <div className="col-12 col-md-8 col-lg-9">
+              <h5 className="text-muted m-0 bg-light border-top border-start border-end w-100 p-3 ps-2">
+                Products on <span className="text-warning">SALE</span>{" "}
+              </h5>
+              <div className="border rounded bg-white p-1 p-lg-3">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 gy-3 px-5 px-sm-0 m-0 w-100">
+                  <div className="col-12">
+                    <div className="vh-50">
+                      <p>Products loading failed!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div className={show ? "d-block" : "d-none"}>
+        <AddProductModal user={user} categories={data?.categories} />
+        <div className="p-1 p-lg-3">
+          {/* filters  */}
+
+          <div className="row m-0 gx-1 gy-3 w-100">
+            {user?.username === Router.query.username &&
+              user?.type === "marchent" && (
+                <div className="col-12">
+                  <div className="p-2 d-flex justify-content-end">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addProduct"
+                    >
+                      <span
+                        className="bi bi-plus pe-2"
+                        style={{ pointerEvent: "none" }}
+                      />
+                      Add New Product
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            <div className="col-12 col-md-4 col-lg-3">
+              <div className="border bg-white rounded">
+                <div className="border border-bottom bg-light p-2">
+                  <p className="text-dark m-0">All Filters</p>
+                </div>
+                <div className="p-2">
+                  <p className="text-muted">Related Category</p>
+                  <ul className="d-flex flex-md-column flex-row flex-wrap list-style-none">
+                    <li className="p-2">
+                      <a href="">Men's Formal shoes</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">sandals</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Men's Sneakers</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Boy's Formal shoes</a>
+                    </li>
+                  </ul>
+                  <hr />
+                </div>
+
+                <div className="p-2">
+                  <p className="text-muted">Related Category</p>
+                  <ul className="d-flex flex-md-column flex-row flex-wrap list-style-none">
+                    <li className="p-2">
+                      <a href="">Men's Formal shoes</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">sandals</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Men's Sneakers</a>
+                    </li>
+                    <li className="p-2">
+                      <a href="">Boy's Formal shoes</a>
+                    </li>
+                  </ul>
+                  <hr />
+                </div>
+              </div>
+            </div>
+
+            {/* products  */}
+
+            <div className="col-12 col-md-8 col-lg-9">
+              <h5 className="text-muted m-0 bg-light border-top border-start border-end w-100 p-3 ps-2">
+                Products on <span className="text-warning">SALE</span>{" "}
+              </h5>
+              <div className="border rounded bg-white p-1 p-lg-3">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 gy-3 px-5 px-sm-0 m-0 w-100">
+                  <div className="col-12">
+                    <p>
+                      <span
+                        className="spinner-border spinner-border-sm me-1"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Loading...
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={show ? "d-block" : "d-none"}>
-      <AddProductModal user={user} categories={data?.categories} />
+      <AddProductModal user={user} />
       <div className="p-1 p-lg-3">
         {/* filters  */}
 
@@ -102,8 +288,8 @@ const SellerProducts = ({ show, user, data }) => {
             </h5>
             <div className="border rounded bg-white p-1 p-lg-3">
               <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 gy-3 px-5 px-sm-0 m-0 w-100">
-                {data?.product?.length > 0 &&
-                  data.product.map((product) => (
+                {data.product.product.length > 0 &&
+                  data.product.product.map((product) => (
                     <SingleProduct
                       imageText={product.images[0]}
                       key={product.id}
@@ -113,17 +299,6 @@ const SellerProducts = ({ show, user, data }) => {
                       price={`$${product.pricing}`}
                     />
                   ))}
-                {/* {newProduct.length > 0 &&
-                  newProduct.map((product) => (
-                    <SingleProduct
-                      imageText={product.image}
-                      key={product.id}
-                      id={productId(product.url)}
-                      name={product.name}
-                      rating={product.stars}
-                      price={product.price_string}
-                    />
-                  ))} */}
               </div>
             </div>
           </div>
@@ -134,6 +309,7 @@ const SellerProducts = ({ show, user, data }) => {
 };
 
 const AddProductModal = ({ user, categories }) => {
+  const { data, isLoading, isError } = useUser("category", "categories");
   const { register, handleSubmit } = useForm();
   const [finalImage, setFinalImage] = useState([]);
   const [imgUrl, setImgUrl] = useState([]);
@@ -386,8 +562,8 @@ const AddProductModal = ({ user, categories }) => {
                       required
                     />
                     <datalist id="datalistOptions">
-                      {categories?.length > 0 &&
-                        categories.map((category, index) => (
+                      {data?.categoriesArr.length > 0 &&
+                        data.categoriesArr.map((category, index) => (
                           <option value={category} key={index} />
                         ))}
                     </datalist>

@@ -103,7 +103,7 @@ const Categories = () => {
 
 
 
-                    <div className="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mt-4 mt-xl-0" >
                         <div className="row row-cols-2 gx-2 gy-2 w-100 h-100 mx-0">
                             
                             <div className="col">

@@ -35,8 +35,6 @@ export async function getStaticProps({ params: { username } }) {
     level,
     Rating,
     totalProducts: getProducts.profile.home.products.length,
-    product: getProducts.profile.home.products || [],
-    categories: categoriesArr || []
   });
   const data = JSON.parse(product);
   if (!data) {
