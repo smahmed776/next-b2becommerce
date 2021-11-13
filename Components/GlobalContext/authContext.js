@@ -40,9 +40,9 @@ export const AuthContextProvider = ({ children }) => {
       setMarchent([]);
     }
   };
-  useEffect(() => {
-    requestCategory();
-  }, []);
+  // useEffect(() => {
+  //   requestCategory();
+  // }, []);
   useEffect(() => {
     requestCategory();
     requestUser();
@@ -56,7 +56,6 @@ export const AuthContextProvider = ({ children }) => {
       value={{
         customerInfo: [customer],
         marchentInfo: [marchent],
-        categoriesInfo: [categories],
         requestUser
       }}
     >

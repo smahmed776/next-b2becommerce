@@ -1,24 +1,21 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SingleProduct from "../Product/SingleProduct";
-import shoeblack from "../img/shoeblack.png";
-import shoewhite from "../img/shoewhite.png";
 import { product } from "../dummydata/ProductDummy";
 import { useForm } from "react-hook-form";
 import API from "../API";
-import { AuthContext } from "../GlobalContext/authContext";
 import { useRouter } from "next/router";
 
-const SellerProducts = ({ show, user, data, isFound }) => {
+const SellerProducts = ({ show, user, data }) => {
   const [newProduct, setNewProduct] = useState([]);
-  const Router = useRouter()
-  const productId = (url) => {
-    const productUrl = url;
-    const urlStr = productUrl.toString();
-    const firstSide = urlStr.substring(urlStr.indexOf("/dp/") + 4);
-    const lastSide = firstSide.substring(firstSide.indexOf("/ref"));
-    const pid = firstSide.replace(lastSide, "");
-    return pid;
-  };
+  const Router = useRouter();
+  // const productId = (url) => {
+  //   const productUrl = url;
+  //   const urlStr = productUrl.toString();
+  //   const firstSide = urlStr.substring(urlStr.indexOf("/dp/") + 4);
+  //   const lastSide = firstSide.substring(firstSide.indexOf("/ref"));
+  //   const pid = firstSide.replace(lastSide, "");
+  //   return pid;
+  // };
   useEffect(() => {
     if (product) {
       setNewProduct([...product.results]);
@@ -27,29 +24,30 @@ const SellerProducts = ({ show, user, data, isFound }) => {
 
   return (
     <div className={show ? "d-block" : "d-none"}>
-      <AddProductModal user={user} />
+      <AddProductModal user={user} categories={data?.categories} />
       <div className="p-1 p-lg-3">
         {/* filters  */}
 
         <div className="row m-0 gx-1 gy-3 w-100">
-          {user?.username === Router.query.username && user?.type === "marchent" && (
-            <div className="col-12">
-              <div className="p-2 d-flex justify-content-end">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addProduct"
-                >
-                  <span
-                    className="bi bi-plus pe-2"
-                    style={{ pointerEvent: "none" }}
-                  />
-                  Add New Product
-                </button>
+          {user?.username === Router.query.username &&
+            user?.type === "marchent" && (
+              <div className="col-12">
+                <div className="p-2 d-flex justify-content-end">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addProduct"
+                  >
+                    <span
+                      className="bi bi-plus pe-2"
+                      style={{ pointerEvent: "none" }}
+                    />
+                    Add New Product
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="col-12 col-md-4 col-lg-3">
             <div className="border bg-white rounded">
@@ -135,7 +133,7 @@ const SellerProducts = ({ show, user, data, isFound }) => {
   );
 };
 
-const AddProductModal = ({ user }) => {
+const AddProductModal = ({ user, categories }) => {
   const { register, handleSubmit } = useForm();
   const [finalImage, setFinalImage] = useState([]);
   const [imgUrl, setImgUrl] = useState([]);
@@ -143,9 +141,6 @@ const AddProductModal = ({ user }) => {
   const addProductbtn = useRef();
   const addProductSpinner = useRef();
   const productFormref = useRef();
-  const { categoriesInfo } = useContext(AuthContext);
-  const [categories] = categoriesInfo;
-
   const onSubmit = async (data) => {
     try {
       addProductbtn.current.setAttribute("disabled", "true");
@@ -174,9 +169,9 @@ const AddProductModal = ({ user }) => {
         }
       });
       productFormref.current.reset();
-      setFinalImage([])
-      setImg([])
-      setImgUrl([])
+      setFinalImage([]);
+      setImg([]);
+      setImgUrl([]);
       addProductSpinner.current.classList.add("d-none");
       addProductbtn.current.removeAttribute("disabled");
     } catch (error) {
@@ -391,9 +386,9 @@ const AddProductModal = ({ user }) => {
                       required
                     />
                     <datalist id="datalistOptions">
-                      {categories.length > 0 &&
+                      {categories?.length > 0 &&
                         categories.map((category, index) => (
-                          <option value={category} key={index}/>
+                          <option value={category} key={index} />
                         ))}
                     </datalist>
                   </div>

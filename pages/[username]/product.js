@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import MarchentPage from "../../Components/Marchent/MarchentPage";
 import { AuthContext } from "../../Components/GlobalContext/authContext";
-import {Server_URL } from '../../config/config'
+import dbConnect from "../../server/db/dbconnect";
+import vendorprofile from "../../server/Schemas/vendorprofile";
+import categories from "../../server/Schemas/categories";
 
 export default function product({ data }) {
   const { customerInfo, marchentInfo } = useContext(AuthContext);
@@ -9,8 +11,7 @@ export default function product({ data }) {
   const [marchent] = marchentInfo;
   return (
     <MarchentPage
-      data={data.product}
-      isFound={data.isFound}
+      data={data}
       user={customer.length > 0 ? customer[0] : marchent[0]}
       home={false}
       about={false}
@@ -21,18 +22,22 @@ export default function product({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
-  const res = await fetch(
-    `${Server_URL}/api/auth/v1/seller/product`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${username}`
-      }
-    }
-  );
-  const data = await res.json();
+  const getProducts = await vendorprofile.findOne({ username });
+  const getCategories = await categories.find();
+  const categoriesArr = getCategories.map((category) => category.name);
 
+  const { image, coverImage, followers, level, Rating } = getProducts.profile;
+  const product = JSON.stringify({
+    image,
+    coverImage,
+    followers,
+    level,
+    Rating,
+    totalProducts: getProducts.profile.home.products.length,
+    product: getProducts.profile.home.products || [],
+    categories: categoriesArr || []
+  });
+  const data = JSON.parse(product);
   if (!data) {
     return {
       notFound: true
@@ -45,15 +50,11 @@ export async function getStaticProps({ params: { username } }) {
 }
 
 export async function getStaticPaths(context) {
-  const res = await fetch(`${Server_URL}/api/auth/v1/seller`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-  const data = await res.json();
+  dbConnect();
+  const getVendors = await vendorprofile.find();
+  const vendors = getVendors.map((vendor) => vendor.username);
 
-  const paths = data.vendors.map((item) => ({ params: { username: item } }));
+  const paths = vendors.map((item) => ({ params: { username: item } }));
 
   return {
     paths,

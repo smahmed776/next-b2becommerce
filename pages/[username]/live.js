@@ -1,5 +1,7 @@
 import MarchentPage from "../../Components/Marchent/MarchentPage";
 import { Server_URL } from "../../config/config";
+import dbConnect from "../../server/db/dbconnect";
+import vendorprofile from "../../server/Schemas/vendorprofile";
 
 export default function live({ data }) {
   return (
@@ -14,15 +16,19 @@ export default function live({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
-  const res = await fetch(`${Server_URL}/api/auth/v1/seller/live`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${username}`
-    }
-  });
-  const data = await res.json();
+  const getProducts = await vendorprofile.findOne({ username });
 
+  const { image, coverImage, followers, level, Rating } = getProducts.profile;
+  const live = JSON.stringify({
+    image,
+    coverImage,
+    followers,
+    level,
+    Rating,
+    totalProducts: getProducts.profile.home.products.length,
+    live: getProducts.profile.home.live || []
+  });
+  const data = JSON.parse(live)
   if (!data) {
     return {
       notFound: true
@@ -35,15 +41,11 @@ export async function getStaticProps({ params: { username } }) {
 }
 
 export async function getStaticPaths(context) {
-  const res = await fetch(`${Server_URL}/api/auth/v1/seller`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-  const data = await res.json();
+  dbConnect();
+  const getVendors = await vendorprofile.find();
+  const vendors = getVendors.map((vendor) => vendor.username);
 
-  const paths = data.vendors.map((item) => ({ params: { username: item } }));
+  const paths = vendors.map((item) => ({ params: { username: item } }));
 
   return {
     paths,

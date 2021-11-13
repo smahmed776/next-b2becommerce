@@ -14,8 +14,8 @@ const Header = ({ children, user }) => {
     "container-fluid  bg-white border-bottom py-0 px-2 px-md-5 sticky-top"
   );
 
-  const { categoriesInfo, requestUser } = useContext(AuthContext);
-  const [categories] = categoriesInfo;
+  const { requestUser } = useContext(AuthContext);
+  // const [categories] = categoriesInfo;
   const Router = useRouter();
   const logOut = async () => {
     try {
@@ -279,10 +279,10 @@ const Header = ({ children, user }) => {
                         <h6 className="nav-text">{i["category name"]}</h6>
                         <hr />
                         <ul className="ps-2">
-                          {categories.length > 0 &&
+                          {/* {categories?.length > 0 &&
                             categories.map((category, index) => (
                               <Fragment key={index}>
-                                {/* <a
+                                <a
                                 className="nav-link d-flex justify-content-between"
                                 role="button"
                                 onClick={(e) => handleClick(e)}
@@ -298,7 +298,7 @@ const Header = ({ children, user }) => {
                                   className="bi bi-chevron-right text-dark "
                                   style={{ pointerEvents: "none" }}
                                 ></span>
-                              </a> */}
+                              </a>
                                 <Link
                                   passHref
                                   href={`/category/${category
@@ -322,7 +322,7 @@ const Header = ({ children, user }) => {
                                   </a>
                                 </Link>
                               </Fragment>
-                            ))}
+                            ))} */}
                         </ul>
                       </li>
                     ))}
