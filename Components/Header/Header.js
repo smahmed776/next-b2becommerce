@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { useUser } from "../GlobalContext/useuser";
 
 const Header = ({ children }) => {
-  const { data, isLoading, isError } = useUser("user", "getuser");
+  const { data, isLoading, isError } = useUser('user', '/getuser', 'GET');
   const { data: session } = useSession();
   const [headerClass, setHeaderClass] = useState(
     "container-fluid  bg-white border-bottom py-0 px-2 px-md-5 sticky-top"
@@ -20,19 +20,6 @@ const Header = ({ children }) => {
   const { requestUser } = useContext(AuthContext);
 
   const Router = useRouter();
-  const logOut = async () => {
-    try {
-      await API.delete("/logout", {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      requestUser();
-      Router.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const navbar = [
     {
@@ -157,188 +144,6 @@ const Header = ({ children }) => {
       "hidden";
     // console.log(e.target.dataset)
   };
-  if (isError) {
-    return (
-      <header>
-        <div className="bg-dark d-flex justify-content-center">
-          <nav className="navbar navbar-dark px-0 px-md-2 top-header">
-            <div className="row row-cols-3 row-cols-sm-5 gx-0 m-0 justify-content-center align-items-center w-100">
-              {topHeaders.map((header, index) => (
-                <div className="col" key={index}>
-                  <ul className="navbar-nav flex-row justify-content-evenly w-100">
-                    <li className="nav-item">
-                      <Link href={header.path} passHref>
-                        <a className="nav-link">{header.name}</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </nav>
-        </div>
-
-        <div id="fixedHeader" className={headerClass}>
-          <nav className="navbar navabar-light py-0">
-            <div className="navbar-brand rounded-pill">
-              <a href="/">
-                <img src={freeLogo.src} alt="" height="55px" width="55px" />
-              </a>
-            </div>
-            <div className="nav-search">
-              <form action="">
-                <input
-                  type="search"
-                  className="form-control bg-primary text-white"
-                  placeholder="Search for your Products..."
-                />
-              </form>
-            </div>
-
-            <button
-              className="btn btn-transparent d-lg-none"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasNav"
-              aria-controls="offcanvasNav"
-            >
-              <span className="bi bi-justify "></span>
-            </button>
-
-            <div className="navbar navbar-expand-md navbar-light bg-white d-none d-lg-flex py-0">
-              <Navigation mobile={true} session={session} user={false} />
-            </div>
-          </nav>
-          <NavOffcanvas user={false} logOut={logOut} />
-        </div>
-
-        <div className="bg-white container-fluid px-2 px-xl-5 mt-2">
-          <nav className="navbar navbar-light w-100">
-            <ul className="navbar-nav flex-row flex-wrap justify-content-evenly w-100 ps-3">
-              <li className="nav-item flex-fill me-2 p-1">
-                <a
-                  role="button"
-                  className="nav-link"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasCollapse"
-                  aria-controls="offcanvasCollapse"
-                >
-                  <span className="bi bi-justify pe-3"></span> Categories
-                </a>
-              </li>
-              <CategoryOffcanvas navbar={navbar} />
-
-              {subHeaders.map((header) => (
-                <li className="nav-item flex-fill me-2 p-1" key={header.name}>
-                  <Link href={header.path} passHref>
-                    <a className="nav-link">{header.name}</a>
-                  </Link>
-                </li>
-              ))}
-
-              <li className="nav-item flex-fill me-2 p-1">
-                <Link href="/login" passHref>
-                  <a className="nav-link">Login</a>
-                </Link>
-              </li>
-
-              <li className="nav-item flex-fill me-2 p-1">
-                <Link href="/signup" passHref>
-                  <button className="btn btn-primary">Sign Up</button>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div>{children}</div>
-      </header>
-    );
-  }
-  if (isLoading) {
-    return (
-      <header>
-        <div className="bg-dark d-flex justify-content-center">
-          <nav className="navbar navbar-dark px-0 px-md-2 top-header">
-            <div className="row row-cols-3 row-cols-sm-5 gx-0 m-0 justify-content-center align-items-center w-100">
-              {topHeaders.map((header, index) => (
-                <div className="col" key={index}>
-                  <ul className="navbar-nav flex-row justify-content-evenly w-100">
-                    <li className="nav-item">
-                      <Link href={header.path} passHref>
-                        <a className="nav-link">{header.name}</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </nav>
-        </div>
-
-        <div id="fixedHeader" className={headerClass}>
-          <nav className="navbar navabar-light py-0">
-            <div className="navbar-brand rounded-pill">
-              <a href="/">
-                <img src={freeLogo.src} alt="" height="55px" width="55px" />
-              </a>
-            </div>
-            <div className="nav-search">
-              <form action="">
-                <input
-                  type="search"
-                  className="form-control bg-primary text-white"
-                  placeholder="Search for your Products..."
-                />
-              </form>
-            </div>
-
-            <button
-              className="btn btn-transparent d-lg-none"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasNav"
-              aria-controls="offcanvasNav"
-            >
-              <span className="bi bi-justify "></span>
-            </button>
-
-            <div className="navbar navbar-expand-md navbar-light bg-white d-none d-lg-flex py-0">
-              <Navigation mobile={true} session={session} user={false} />
-            </div>
-          </nav>
-          <NavOffcanvas user={false} isLoading={isLoading} logOut={logOut} />
-        </div>
-
-        <div className="bg-white container-fluid px-2 px-xl-5 mt-2">
-          <nav className="navbar navbar-light w-100">
-            <ul className="navbar-nav flex-row flex-wrap justify-content-evenly w-100 ps-3">
-              <li className="nav-item flex-fill me-2 p-1">
-                <a
-                  role="button"
-                  className="nav-link"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasCollapse"
-                  aria-controls="offcanvasCollapse"
-                >
-                  <span className="bi bi-justify pe-3"></span> Categories
-                </a>
-              </li>
-              <CategoryOffcanvas navbar={navbar} />
-
-              {subHeaders.map((header) => (
-                <li className="nav-item flex-fill me-2 p-1" key={header.name}>
-                  <Link href={header.path} passHref>
-                    <a className="nav-link">{header.name}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-        <div>{children}</div>
-      </header>
-    );
-  }
 
   return (
     <header>
@@ -388,10 +193,20 @@ const Header = ({ children }) => {
           </button>
 
           <div className="navbar navbar-expand-md navbar-light bg-white d-none d-lg-flex py-0">
-            <Navigation mobile={true} session={session} user={data.user} />
+            <Navigation
+              mobile={true}
+              session={session}
+              user={data?.user}
+              isLoading={isLoading}
+              isError={isError}
+            />
           </div>
         </nav>
-        <NavOffcanvas user={data.user} logOut={logOut} />
+        <NavOffcanvas
+          user={data?.user}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </div>
 
       <div className="bg-white container-fluid px-2 px-xl-5 mt-2">
@@ -426,7 +241,7 @@ const Header = ({ children }) => {
 };
 
 const CategoryOffcanvas = ({ navbar }) => {
-  const { data, isLoading, isError } = useUser("categories", "categories");
+  const { data, isLoading, isError } = useUser("categories", "/categories", 'GET');
   if (isError) {
     return (
       <div
@@ -668,8 +483,15 @@ const CategoryOffcanvas = ({ navbar }) => {
   );
 };
 
-const NavOffcanvas = ({ isLoading, user, logOut }) => {
-  if (isLoading) {
+const NavOffcanvas = ({ isLoading, isError, user }) => {
+  const logout = async () => {
+    await API.delete('/logout', {
+      headers: {
+        "Contetnt-Type": "application/json"
+      }
+    })
+  }
+  if (isError) {
     return (
       <div
         className="offcanvas offcanvas-start d-lg-none bg-light"
@@ -693,9 +515,109 @@ const NavOffcanvas = ({ isLoading, user, logOut }) => {
                 className="btn w-100"
                 data-bs-dismiss="offcanvas"
                 aria-label="Close"
-              ></button>
+              >
+                <Link className="nav-link" passHref href="/login">
+                  <a className="nav-link">Login</a>
+                </Link>
+
+                <Link className="nav-link" passHref href="/signup">
+                  <a className="nav-link">Create Account</a>
+                </Link>
+              </button>
             </li>
             <hr />
+            <div className="row row-cols-2 gx-3 gy-3 my-2 px-3">
+              <div className="col">
+                <a
+                  role="button"
+                  className="text-dark"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasCollapse"
+                  aria-controls="offcanvasCollapse"
+                >
+                  <div className="d-flex flex-column align-items-center bg-white border p-2">
+                    <span className="bi bi-justify"></span>
+                    <p> Categories</p>
+                  </div>
+                </a>
+              </div>
+              <div className="col">
+                <Link
+                  href="/notification"
+                  passHref
+                  style={{ textDecoration: "none" }}
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-bell"></span>
+                      <p>Notification</p>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+              <div className="col">
+                <Link
+                  href="/offers"
+                  style={{ textDecoration: "none" }}
+                  passHref
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-megaphone"></span>
+                      <p>My offers</p>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+              <div className="col">
+                <Link passHref href="/cart" style={{ textDecoration: "none" }}>
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-cart4"></span>
+                      <p> Cart</p>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+              <div className="col">
+                <Link
+                  href="/message"
+                  passHref
+                  style={{ textDecoration: "none" }}
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-chat"></span>
+                      <p>My Inbox</p>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div
+        className="offcanvas offcanvas-start d-lg-none bg-light"
+        tabIndex="-1"
+        id="offcanvasNav"
+        aria-labelledby="offcanvasNavLabel"
+        style={{ zIndex: "2000" }}
+      >
+        <div className="offcanvas-header border-bottom bg-white justify-content-center">
+          <button
+            type="button"
+            className="btn-close text-reset text-center w-100"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="offcanvas-body justify-content-center align-items-center">
+          <ul className="navbar-nav justify-content-center me-auto mb-2 mb-lg-0">
             <div className="row row-cols-2 gx-3 gy-3 my-2 px-3">
               <div className="col">
                 <a
@@ -793,52 +715,40 @@ const NavOffcanvas = ({ isLoading, user, logOut }) => {
               data-bs-dismiss="offcanvas"
               aria-label="Close"
             >
-              {user && (
-                <Link className="nav-link" passHref href="/profile">
-                  <a>
-                    <div className="row m-0 w-100 bg-white rounded p-2">
-                      <div className="col-3 m-0 overflow-hidden">
-                        <img
-                          src={user.image}
-                          className="d-inline rounded-pill"
-                          height="55px"
-                          width="55px"
-                          style={{
-                            height: "55px",
-                            width: "55px",
-                            objectFit: "cover"
-                          }}
-                          alt={user.name}
-                        />
-                      </div>
-                      <div className="col-9 m-0">
-                        <p
-                          className=" text-dark text-start"
-                          style={{ fontSize: "1rem" }}
-                        >
-                          {user.name}
-                        </p>
-                        <p
-                          className="text-muted text-start m-0"
-                          style={{ fontSize: "1rem" }}
-                        >
-                          See your profile
-                        </p>
-                      </div>
+              <Link className="nav-link" passHref href="/profile">
+                <a>
+                  <div className="row m-0 w-100 bg-white rounded p-2">
+                    <div className="col-3 m-0 overflow-hidden">
+                      <img
+                        src={user.image}
+                        className="d-inline rounded-pill"
+                        height="55px"
+                        width="55px"
+                        style={{
+                          height: "55px",
+                          width: "55px",
+                          objectFit: "cover"
+                        }}
+                        alt={user.name}
+                      />
                     </div>
-                  </a>
-                </Link>
-              )}
-              {!user && (
-                <Link className="nav-link" passHref href="/login">
-                  <a className="nav-link">Login</a>
-                </Link>
-              )}
-              {!user && (
-                <Link className="nav-link" passHref href="/signup">
-                  <a className="nav-link">Create Account</a>
-                </Link>
-              )}
+                    <div className="col-9 m-0">
+                      <p
+                        className=" text-dark text-start"
+                        style={{ fontSize: "1rem" }}
+                      >
+                        {user.name}
+                      </p>
+                      <p
+                        className="text-muted text-start m-0"
+                        style={{ fontSize: "1rem" }}
+                      >
+                        See your profile
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </Link>
             </button>
           </li>
           <hr />
@@ -903,15 +813,13 @@ const NavOffcanvas = ({ isLoading, user, logOut }) => {
             </div>
           </div>
 
-          {user && (
-            <button
-              type="button"
-              onClick={() => logOut()}
-              className="btn btn-danger w-100 "
-            >
-              Log Out
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={()=> logout()}
+            className="btn btn-danger w-100 "
+          >
+            Log Out
+          </button>
         </ul>
       </div>
     </div>

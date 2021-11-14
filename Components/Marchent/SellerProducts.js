@@ -11,7 +11,8 @@ const SellerProducts = ({ show, user, datass }) => {
 
   const { data, isLoading, isError } = useUser(
     "product",
-    "seller/product",
+    "/seller/product",
+    "GET",
     username
   );
   if (isError) {
@@ -309,7 +310,11 @@ const SellerProducts = ({ show, user, datass }) => {
 };
 
 const AddProductModal = ({ user, categories }) => {
-  const { data, isLoading, isError } = useUser("category", "categories");
+  const { data, isLoading, isError } = useUser(
+    "category",
+    "/categories",
+    "GET"
+  );
   const { register, handleSubmit } = useForm();
   const [finalImage, setFinalImage] = useState([]);
   const [imgUrl, setImgUrl] = useState([]);
