@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import freeLogo from "../img/mlogo.png";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { useUser } from "../GlobalContext/useuser";
 
 const Header = ({ children }) => {
-  const { data, isLoading, isError } = useUser('user', '/getuser', 'GET');
+  const { data, isLoading, isError } = useUser("user", "/getuser", "GET");
   const { data: session } = useSession();
   const [headerClass, setHeaderClass] = useState(
     "container-fluid  bg-white border-bottom py-0 px-2 px-md-5 sticky-top"
@@ -241,7 +241,11 @@ const Header = ({ children }) => {
 };
 
 const CategoryOffcanvas = ({ navbar }) => {
-  const { data, isLoading, isError } = useUser("categories", "/categories", 'GET');
+  const { data, isLoading, isError } = useUser(
+    "categories",
+    "/categories",
+    "GET"
+  );
   if (isError) {
     return (
       <div
@@ -484,13 +488,28 @@ const CategoryOffcanvas = ({ navbar }) => {
 };
 
 const NavOffcanvas = ({ isLoading, isError, user }) => {
+  const logoutSpinner = useRef();
+  const logoutBtn = useRef();
+  const Router = useRouter();
+
   const logout = async () => {
-    await API.delete('/logout', {
-      headers: {
-        "Contetnt-Type": "application/json"
-      }
-    })
-  }
+    try {
+      logoutSpinner.current.classList.remove("d-none");
+      logoutBtn.current.setAttribute("disabled", "true");
+      await API.delete("/logout", {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      logoutSpinner.current.classList.add("d-none");
+      Router.reload();
+      logoutBtn.current.removeAttribute("disabled");
+    } catch (error) {
+      logoutSpinner.current.classList.add("d-none");
+      logoutBtn.current.removeAttribute("disabled");
+      // console.log(error.response, error)
+    }
+  };
   if (isError) {
     return (
       <div
@@ -542,56 +561,84 @@ const NavOffcanvas = ({ isLoading, isError, user }) => {
                 </a>
               </div>
               <div className="col">
-                <Link
-                  href="/notification"
-                  passHref
-                  style={{ textDecoration: "none" }}
+                <button
+                  className="btn w-100"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
                 >
-                  <a className="text-dark">
-                    <div className="d-flex flex-column align-items-center bg-white border p-2">
-                      <span className="bi bi-bell"></span>
-                      <p>Notification</p>
-                    </div>
-                  </a>
-                </Link>
+                  <Link
+                    href="/notification"
+                    passHref
+                    style={{ textDecoration: "none" }}
+                  >
+                    <a className="text-dark">
+                      <div className="d-flex flex-column align-items-center bg-white border p-2">
+                        <span className="bi bi-bell"></span>
+                        <p>Notification</p>
+                      </div>
+                    </a>
+                  </Link>
+                </button>
               </div>
               <div className="col">
-                <Link
-                  href="/offers"
-                  style={{ textDecoration: "none" }}
-                  passHref
+                <button
+                  className="btn w-100"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
                 >
-                  <a className="text-dark">
-                    <div className="d-flex flex-column align-items-center bg-white border p-2">
-                      <span className="bi bi-megaphone"></span>
-                      <p>My offers</p>
-                    </div>
-                  </a>
-                </Link>
+                  <Link
+                    href="/offers"
+                    style={{ textDecoration: "none" }}
+                    passHref
+                  >
+                    <a className="text-dark">
+                      <div className="d-flex flex-column align-items-center bg-white border p-2">
+                        <span className="bi bi-megaphone"></span>
+                        <p>My offers</p>
+                      </div>
+                    </a>
+                  </Link>
+                </button>
               </div>
               <div className="col">
-                <Link passHref href="/cart" style={{ textDecoration: "none" }}>
-                  <a className="text-dark">
-                    <div className="d-flex flex-column align-items-center bg-white border p-2">
-                      <span className="bi bi-cart4"></span>
-                      <p> Cart</p>
-                    </div>
-                  </a>
-                </Link>
+                <button
+                  className="btn w-100"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                >
+                  <Link
+                    passHref
+                    href="/cart"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <a className="text-dark">
+                      <div className="d-flex flex-column align-items-center bg-white border p-2">
+                        <span className="bi bi-cart4"></span>
+                        <p> Cart</p>
+                      </div>
+                    </a>
+                  </Link>
+                </button>
               </div>
               <div className="col">
-                <Link
-                  href="/message"
-                  passHref
-                  style={{ textDecoration: "none" }}
+                <button
+                  className="btn w-100"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
                 >
-                  <a className="text-dark">
-                    <div className="d-flex flex-column align-items-center bg-white border p-2">
-                      <span className="bi bi-chat"></span>
-                      <p>My Inbox</p>
-                    </div>
-                  </a>
-                </Link>
+                  <Link
+                    href="/message"
+                    passHref
+                    style={{ textDecoration: "none" }}
+                  >
+                    <a className="text-dark">
+                      <div className="d-flex flex-column align-items-center bg-white border p-2">
+                        <span className="bi bi-chat"></span>
+                        <p>My Inbox</p>
+                      </div>
+                    </a>
+                  </Link>
+                </button>
               </div>
             </div>
           </ul>
@@ -814,10 +861,17 @@ const NavOffcanvas = ({ isLoading, isError, user }) => {
           </div>
 
           <button
+            ref={logoutBtn}
             type="button"
-            onClick={()=> logout()}
+            onClick={() => logout()}
             className="btn btn-danger w-100 "
           >
+            <span
+              className="spinner-border spinner-border-sm me-3 d-none"
+              ref={logoutSpinner}
+              role="status"
+              aria-hidden="true"
+            ></span>
             Log Out
           </button>
         </ul>

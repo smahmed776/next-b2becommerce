@@ -13,7 +13,7 @@ export default async function handleLogOut(req, res) {
             "set-cookie",
             cookie.serialize("jwt", 'expired', options)
         )
-        res.end()
+        res.status(200).json({message: "Logged out succesfully"})
         
     } else {
         return res.status(400).json({ message: "Invalid Request Method" })

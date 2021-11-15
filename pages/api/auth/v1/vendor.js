@@ -1,5 +1,4 @@
 import dbConnect from "../../../../server/db/dbconnect";
-import jwt from "jsonwebtoken";
 import Marchent from "../../../../server/Schemas/Marchent";
 import Customer from "../../../../server/Schemas/Customer";
 import cookie from "cookie";
@@ -48,8 +47,7 @@ export default async function getUser(req, res) {
           coverImage: getvendorprofile[0].profile.coverImage,
           country: getMarchent.country,
           type: decode.type,
-          username: getMarchent.username,
-          phone: getMarchent.phone
+          username: getMarchent.username
         };
         res.status(200).json({
           type: decode.type,

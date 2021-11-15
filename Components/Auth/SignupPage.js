@@ -5,14 +5,11 @@ import freeLogo from "../img/mlogo.png";
 import Link from "next/link";
 import API from "../API";
 import { useRouter } from "next/dist/client/router";
-import { AuthContext } from "../GlobalContext/authContext";
+import { useUser } from "../GlobalContext/useuser";
 
 const SignupPage = () => {
-  const {customerInfo, marchentInfo} = useContext(AuthContext);
-  const [customer] = customerInfo;
-  const [marchent] = marchentInfo;
+  const {data, isError, isLoading} = useUser("user", "/getuser", "GET");
   const Router = useRouter();
-  const { data: session } = useSession();
   const [showMerchent, setShowMerchent] = useState(true);
   const [showCustomer, setShowCustomer] = useState(false);
   const [invalid, setInvalid] = useState([]);
@@ -40,10 +37,10 @@ const SignupPage = () => {
   };
 
   useEffect(() => {
-    if (session || customer.length > 0 || marchent.length > 0) {
+    if (data) {
       return Router.push("/");
     }
-  }, [session, customer, marchent]);
+  }, [data]);
 
   return (
     <main className="d-flex justify-content-center align-items-center p-0 p-sm-3">
@@ -211,13 +208,14 @@ const Merchent = ({ show, invalidText, setValid, login }) => {
             <div className="col-12">
               <div className="p-2">
                 <label className="form-label" htmlFor="companyname">
-                  User Name
+                  User Name (15 characters maximum)
                 </label>
                 <input
                   {...register("username")}
                   type="text"
                   id="username"
                   className="form-control"
+                  maxLength="15"
                   required
                 />
               </div>

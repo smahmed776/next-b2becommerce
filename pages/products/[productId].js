@@ -1,27 +1,22 @@
-import { useEffect, useState } from 'react'
-import ProductsPage from '../../Components/Product/ProductsPage'
-import { useRouter } from 'next/router';
-import { product, singleProduct } from '../../Components/dummydata/ProductDummy';
-import { Server_URL } from '../../config/config';
+import products from "../../server/Schemas/products";
+import ProductsPage from "../../Components/Product/ProductsPage";
+import dbConnect from "../../server/db/dbconnect";
 
-export default function products({data}) {
-    console.log(data)
-   
-
-    return (
-        <ProductsPage product={productItem? productItem[0] : null}/>
-    )
+export default function productsHandler({ data }) {
+  return <ProductsPage product={data} />;
 }
 
-export async function getServerSideProps (context){
-    const res = await fetch(`${Server_URL}/api/auth/v1/product/${context.query.productId}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    const data = res.json();
+export async function getServerSideProps(context) {
+  await dbConnect();
+  const getProduct = await products.findOne({ _id: context.query.productId });
+  const jsonformat = await JSON.stringify(getProduct);
+  const data = JSON.parse(jsonformat);
+  if (!data) {
     return {
-        props: {data}
-    }
+      notFound: true
+    };
+  }
+  return {
+    props: { data }
+  };
 }

@@ -53,14 +53,20 @@ const CompanyDetails = ({ product }) => {
                     <div className="row row-cols-1 gy-2 w-100 m-0">
                         <div className="col d-flex justify-content-between p-0">
                             <h6 className="text-muted p-3 d-inline">Product details of {product && product.name}</h6>
-                            <Link href="/marchent/home">
+                            <Link href="#">
                                 <button className="btn h-75 btn-warning text-white cdetail-btn" style={{ borderTopRightRadius: "0", borderBottomRightRadius: "0" }}>Go To Store</button>
                             </Link>
                         </div>
                         <div className="col px-3">
-                            <h6>Description: </h6>
+                            <h6>Product Information: </h6>
                             <p>
-                                {product && product.small_description}
+                                {product && product.product_information}
+                            </p>
+                        </div>
+                        <div className="col px-3 mt-3">
+                            <h6>Product Details: </h6>
+                            <p>
+                                {product && product.full_description}
                             </p>
                         </div>
                     </div>

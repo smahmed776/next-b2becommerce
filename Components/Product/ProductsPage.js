@@ -1,19 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import Slider from 'react-slick';
 import { RatingContext } from '../GlobalContext/RatingContext';
 import CompanyDetails from './CompanyDetails';
 
 const ProductsPage = ({ product }) => {
+    const productMainImg = useRef();
 
     const { Rating } = useContext(RatingContext);
 
-
-    const img = [
-        "https://m.media-amazon.com/images/I/41GhMomXvqL.jpg",
-        "https://m.media-amazon.com/images/I/51mPvLjZOKL.jpg",
-        "https://m.media-amazon.com/images/I/51dfQ7+-aVL.jpg",
-        "https://m.media-amazon.com/images/I/51LttGIz-KL.jpg"
-    ]
 
     const PrevButton = (props) => {
         const { onClick } = props;
@@ -37,7 +31,7 @@ const ProductsPage = ({ product }) => {
 
 
     return (
-        <main className="my-3" key={product && product.id}>
+        <main className="my-3" key={product && product._id}>
             <div className="container-fluid py-2 px-0 px-sm-3 px-xl-5">
                 <div className="row m-0 border mb-3">
 
@@ -46,7 +40,7 @@ const ProductsPage = ({ product }) => {
                         <div className="">
                             <div className="row m-0 gx-0 gx-xl-2">
                                 <div className="col-12 col-lg-5 p-1 p-sm-5 p-lg-1">
-                                    <img src={product && product.images[0]} alt={product && product.name} height="300px" width="100%" />
+                                    <img ref={productMainImg} src={product && product.images[0]} alt={product && product.name} height="300px" width="100%" />
                                     <div className="p-0 p-sm-3">
                                         <Slider
                                             slidesToShow={3}
@@ -60,7 +54,7 @@ const ProductsPage = ({ product }) => {
                                                 <div className=" p-1">
                                                     <div className="border rounded shadow-sm p-1">
 
-                                                        <img src={image} alt="img" height="75" width="100%" />
+                                                        <img onClick={(e)=> productMainImg.current.src = e.target.src} src={image} alt="img" height="75" width="100%" style={{cursor: "pointer"}} />
                                                     </div>
 
                                                 </div>
@@ -84,11 +78,11 @@ const ProductsPage = ({ product }) => {
                                         <div className="col-12">
                                             <div className="d-flex justify-content-between py-2">
                                                 <div className="border-end pe-3">
-                                                    {Rating(parseInt(product && product.average_rating))} <small className="text-primary">{product && product.total_reviews} reviews</small>
+                                                    {Rating(parseInt(product && product.average_rating))} <small className="text-primary">{product && product.total_reviews? product.total_reviews : 0 } reviews</small>
                                                 </div>
                                                 <div className="px-2 text-primary">
                                                     <small>
-                                                        {product && product.total_answered_questions} total answered questions
+                                                        {product && product.total_answered_questions ? product.total_answered_questions : 0} total answered questions
                                                     </small>
                                                 </div>
                                                 <span className="bi bi-share pe-3 pe-sm-0"></span>
@@ -96,8 +90,8 @@ const ProductsPage = ({ product }) => {
                                             </div>
                                             <div className="d-flex justify-content-start py-2">
                                                 <small className="me-2">Brand :</small>
-                                                <small className="text-primary border-end px-2 me-2">{product && product.brand}</small>
-                                                <small className="text-primary">More product from {product && product.brand.toString().replace('Visit the', '')}</small>
+                                                <small className="text-primary border-end px-2 me-2">{product && product.seller_name}</small>
+                                                <small className="text-primary">More product from {product && product.seller_name.toString()}</small>
                                             </div>
                                             <hr />
                                         </div>
@@ -110,7 +104,7 @@ const ProductsPage = ({ product }) => {
                                                 </div>
                                                 <div className="px-4">
                                                     <h4 className="m-0 text-primary">
-                                                        <span className="pe-2">{product && product.pricing}</span>-<span className="ps-2">{product && product.list_price}</span>
+                                                        <span className="pe-2">{product && product.pricing}</span>-<span className="ps-2">{product && product.listing_price}</span>
                                                     </h4>
                                                     <p className="m-0">
                                                         <span className="text-muted text-decoration-line-through me-2">$300</span> <span className="text-muted">-10%</span>
@@ -130,7 +124,7 @@ const ProductsPage = ({ product }) => {
                                                     <div className="border d-flex flex-column justify-content-center">
                                                         <div className="d-flex justify-content-center">
 
-                                                            <img src={img[0]} alt="" height="55px" width="55px" />
+                                                            <img src={product.images[0]} alt="" height="55px" width="55px" />
                                                         </div>
 
                                                         <p className="m-0 text-center" >Black</p>
@@ -223,7 +217,7 @@ const ProductsPage = ({ product }) => {
                                     <hr />
                                 </div>
                                 <div className="col">
-                                    <p>Sold By, <br /> Tech company.</p>
+                                    <p>Sold By, <br /> {product && product.seller_name} company.</p>
                                     <div className="row m-0 row-cols-3 w-100">
                                         <div className="col d-flex flex-column justify-content-center border-end border-bottom">
                                             <p className="text-muted">Popular seller rating</p>

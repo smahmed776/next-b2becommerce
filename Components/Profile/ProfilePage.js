@@ -154,7 +154,7 @@ const ProfilePage = ({ user }) => {
                       className="form-control ps-2"
                       disabled
                       name="name"
-                      placeholder={session ? session.user.name : user?.name}
+                      placeholder={user?.name}
                     />
                   </div>
                 </div>
@@ -171,7 +171,7 @@ const ProfilePage = ({ user }) => {
                       className="form-control ps-2"
                       disabled
                       name="email"
-                      placeholder={session ? session.user.email : user?.email}
+                      placeholder={user?.email}
                     />
                   </div>
                 </div>
@@ -188,7 +188,7 @@ const ProfilePage = ({ user }) => {
                       className="form-control ps-2"
                       disabled
                       name="phone"
-                      placeholder={user ? user.phone ? user.phone : "Add a number" : "+01XXXXXXXXXX"}
+                      placeholder={user?.phone ? user.phone : "Add a number"}
                     />
                   </div>
                 </div>

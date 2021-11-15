@@ -5,12 +5,10 @@ import freeLogo from "../img/mlogo.png";
 import Link from "next/link";
 import API from "../API";
 import { useRouter } from "next/dist/client/router";
-import { AuthContext } from "../GlobalContext/authContext";
+import { useUser } from "../GlobalContext/useuser";
 
 const LoginPage = () => {
-  const { requestUser, customerInfo, marchentInfo } = useContext(AuthContext);
-  const [customer] = customerInfo;
-  const [marchent] = marchentInfo;
+  const { data, isError} = useUser("user", '/getuser', 'GET');
   const Router = useRouter();
   const [invalid, setInvalid] = useState([]);
   const [valid, setValid] = useState([]);
@@ -52,10 +50,10 @@ const LoginPage = () => {
   };
   
   useEffect(() => {
-    if (session || customer.length > 0 || marchent.length > 0) {
+    if (data) {
       Router.push("/");
     }
-  }, [session]);
+  }, [data]);
 
   return (
     <main className="d-flex justify-content-center align-items-center p-0 p-sm-3">

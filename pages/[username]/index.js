@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 export default function marchent() {
     const history = useRouter();
     useEffect(() => {
-        history.push('/marchent/home')
+        history.push('/')
     })
     return (
         <div className="d-flex justify-content-center align-items-center p-5 vh-100">

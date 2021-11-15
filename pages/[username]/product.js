@@ -51,6 +51,7 @@ export async function getStaticProps({ params: { username } }) {
 
 export async function getStaticPaths(context) {
   await dbConnect();
+  console.log(context.query)
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 

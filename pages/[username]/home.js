@@ -53,7 +53,7 @@ export default function home({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
-  await dbConnect()
+  await dbConnect();
   const getProducts = await vendorprofile.findOne({ username });
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
@@ -74,7 +74,8 @@ export async function getStaticProps({ params: { username } }) {
   }
 
   return {
-    props: { data } // will be passed to the page component as props
+    props: { data },
+    revalidate: 5
   };
 }
 
