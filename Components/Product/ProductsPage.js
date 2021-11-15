@@ -124,7 +124,7 @@ const ProductsPage = ({ product }) => {
                                                     <div className="border d-flex flex-column justify-content-center">
                                                         <div className="d-flex justify-content-center">
 
-                                                            <img src={product.images[0]} alt="" height="55px" width="55px" />
+                                                            <img src={product && product.images[0]} alt="" height="55px" width="55px" />
                                                         </div>
 
                                                         <p className="m-0 text-center" >Black</p>
