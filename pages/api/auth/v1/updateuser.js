@@ -2,7 +2,6 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import dbConnect from "../../../../server/db/dbconnect";
 import Customer from "../../../../server/Schemas/Customer";
-import Marchent from "../../../../server/Schemas/Marchent";
 import vendorprofile from "../../../../server/Schemas/vendorprofile";
 
 const JWT_SECRET = "salksfhklaskdjfkshalkjfjlasdlfs";
@@ -39,7 +38,7 @@ export default async function handleLogOut(req, res) {
       }
       if (decode.type === "marchent") {
         await vendorprofile.findOneAndUpdate(
-          { vendorId: decode.id },
+          { _id: decode.id },
           {
             $set: {
               "profile.image": image

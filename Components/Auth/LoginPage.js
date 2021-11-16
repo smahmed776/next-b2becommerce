@@ -8,10 +8,10 @@ import { useRouter } from "next/dist/client/router";
 import { useUser } from "../GlobalContext/useuser";
 
 const LoginPage = () => {
-  const { data, isError} = useUser("user", '/getuser', 'GET');
+  const { data, isError } = useUser("user", "/getuser", "GET");
   const Router = useRouter();
   const [invalid, setInvalid] = useState([]);
-  const [valid, setValid] = useState([]);
+  const [valid, setValid] = useState(null);
   const { register, handleSubmit } = useForm();
   const loginSubmit = useRef();
   const loginSpinner = useRef();
@@ -25,20 +25,19 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       loginSpinner.current.classList.remove("d-none");
-      setValid([]);
+      setValid("");
       loginSubmit.current.setAttribute("disabled", "true");
       const res = await API.post("/login", data, {
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       });
-      setValid([res.data.message]);
+      setValid(res.data.message);
       loginForm.current.reset();
       loginSpinner.current.classList.add("d-none");
       invalidText([]);
       loginSubmit.current.removeAttribute("disabled");
-      requestUser();
-      Router.push("/");
+      Router.reload();
     } catch (error) {
       loginSpinner.current.classList.add("d-none");
       loginSubmit.current.removeAttribute("disabled");
@@ -48,12 +47,12 @@ const LoginPage = () => {
       setValid([]);
     }
   };
-  
+
   useEffect(() => {
-    if (data) {
+    if (!isError) {
       Router.push("/");
     }
-  }, [data]);
+  }, [isError]);
 
   return (
     <main className="d-flex justify-content-center align-items-center p-0 p-sm-3">
@@ -83,13 +82,12 @@ const LoginPage = () => {
                 invalid.map((inv) => (
                   <h6 className="text-danger">{`* ${inv}`}</h6>
                 ))}
-              {valid.length > 0 &&
-                valid.map((val) => (
-                  <h6 className="text-success">
-                    <span className="bi bi-check-circle-fill text-success pe-2"></span>
-                    {val}
-                  </h6>
-                ))}
+              {valid && (
+                <h6 className="text-success">
+                  <span className="bi bi-check-circle-fill text-success pe-2"></span>
+                  {valid}
+                </h6>
+              )}
 
               <h5 className="p-2 text-center text-primary my-2">
                 Log in to Your Account

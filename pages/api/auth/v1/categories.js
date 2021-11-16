@@ -1,8 +1,10 @@
+import dbConnect from "../../../../server/db/dbconnect";
 import categories from "../../../../server/Schemas/categories";
 
 export default async function categoryHandler(req, res) {
   if (req.method === "GET") {
     try {
+      await dbConnect()
       const getCategories = await categories.find()
       let categoriesArr = [];
       getCategories.map(category => (

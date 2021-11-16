@@ -20,7 +20,7 @@ export default async function getUser(req, res) {
         images
       } = req.body;
       const getvendorprofile = await vendorprofile.findOne({
-        vendorId: vendor_id
+        _id: vendor_id
       });
       const addNewProduct = await new products({
         name,
@@ -49,7 +49,7 @@ export default async function getUser(req, res) {
         id: newProduct._id
       });
       await vendorprofile.findOneAndUpdate(
-        { vendorId: vendor_id },
+        { _id: vendor_id },
         {
           $set: {
             "profile.home.products": getvendorprofile.profile.home.products
@@ -59,7 +59,7 @@ export default async function getUser(req, res) {
       );
       if (await categories.findOne({ name: product_category })) {
         const getNewVendor = await vendorprofile.findOne({
-          vendorId: vendor_id
+          _id: vendor_id
         });
         const getProductID = getNewVendor.profile.home.products.filter(
           (i) => i.name === name
@@ -87,7 +87,7 @@ export default async function getUser(req, res) {
         );
       } else {
         const getNewVendor = await vendorprofile.findOne({
-          vendorId: vendor_id
+          _id: vendor_id
         });
         const getProductID = getNewVendor.profile.home.products.filter(
           (i) => i.name === name

@@ -1,5 +1,4 @@
 import dbConnect from "../../../../server/db/dbconnect";
-import Marchent from "../../../../server/Schemas/Marchent";
 import Customer from "../../../../server/Schemas/Customer";
 import bcrypt from "bcrypt";
 import vendorprofile from "../../../../server/Schemas/vendorprofile";
@@ -34,13 +33,13 @@ export default async function handler(req, res) {
         country
       ) {
         let errors = [];
-        if (await Marchent.findOne({ email })) {
+        if (await vendorprofile.findOne({ email })) {
           errors.push("Email already taken!");
         }
-        if (await Marchent.findOne({ username })) {
+        if (await vendorprofile.findOne({ username })) {
           errors.push("Username not available!");
         }
-        if (await Marchent.findOne({ phone })) {
+        if (await vendorprofile.findOne({ phone })) {
           errors.push("Phone number already in use!");
         }
         if (errors.length > 0) {
@@ -48,7 +47,7 @@ export default async function handler(req, res) {
         }
         try {
           const hashPass = await bcrypt.hash(password, 12);
-          const marchent = await new Marchent({
+          const marchent = await new vendorprofile({
             name: {
               firstName: firstName,
               lastName: lastName,
@@ -62,18 +61,11 @@ export default async function handler(req, res) {
             country,
           });
           await marchent.save();
-          const marchentId = await Marchent.find({username: username}); 
-          const createVendorprofile = await new vendorprofile({
-            vendorId: marchentId[0]._id,
-            username,
-            companyName
-          })
-          await createVendorprofile.save();
+
   
           res.status(200).json({ message: "Account created successfully" });
         } catch (error) {
-          await Marchent.findOneAndDelete({username: username})
-          res.status(400).json({error, message: "Couldnot create account"})
+          res.status(400).json({error, message: "Could not create account"})
         }
       } else {
         return res.status(404).json({ message: "Missing informations!" });

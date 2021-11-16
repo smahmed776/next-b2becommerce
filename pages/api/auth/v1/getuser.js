@@ -1,6 +1,5 @@
 import dbConnect from "../../../../server/db/dbconnect";
 import jwt from "jsonwebtoken";
-import Marchent from "../../../../server/Schemas/Marchent";
 import Customer from "../../../../server/Schemas/Customer";
 import cookie from "cookie";
 import vendorprofile from "../../../../server/Schemas/vendorprofile";
@@ -13,12 +12,24 @@ export default async function getUser(req, res) {
     const isCookie = req.headers.cookie && cookie.parse(req.headers.cookie);
     const jsonToken = isCookie && isCookie.jwt;
     if (jsonToken) {
-      let decode= {};
+      let decode = {};
       await jwt.verify(jsonToken, JWT_SECRET, (err, data) => {
-        if (err)
+        if (err) {
+          const options = {
+            secure: process.env.NODE_ENV !== "development",
+            httpOnly: true,
+            sameSite: "strict",
+            path: "/",
+            maxAge: 1 
+          };
+          res.setHeader(
+            "set-cookie",
+            cookie.serialize("jwt", "invalid token", options)
+          );
           res.status(404).json({
-            message: "invalid web token",
+            message: "invalid web token"
           });
+        }
         decode = data;
       });
 
@@ -34,18 +45,31 @@ export default async function getUser(req, res) {
         res.status(200).json({
           type: decode.type,
           user,
-          message: "User Found",
+          message: "User Found"
         });
       }
       if (decode?.type === "marchent") {
-        const getMarchent = await Marchent.findById(decode.id);
-        const getvendorprofile = await vendorprofile.find({vendorId: decode.id})
+        const getMarchent = await vendorprofile.findById(decode.id);
+        if (!getMarchent) {
+          const options = {
+            secure: process.env.NODE_ENV !== "development",
+            httpOnly: true,
+            sameSite: "strict",
+            path: "/",
+            expired: true
+          };
+          res.setHeader(
+            "set-cookie",
+            cookie.serialize("jwt", "invalid token", options)
+          );
+          res.status(403).json({ message: "User does not exist on database!" });
+        }
         const user = {
           id: decode.id,
           name: `${getMarchent.name.firstName} ${getMarchent.name.lastName}`,
           email: getMarchent.email,
-          image: getvendorprofile[0].profile.image,
-          coverImage: getvendorprofile[0].profile.coverImage,
+          image: getMarchent.profile.image,
+          coverImage: getMarchent.profile.coverImage,
           country: getMarchent.country,
           type: decode.type,
           username: getMarchent.username,
@@ -54,17 +78,17 @@ export default async function getUser(req, res) {
         res.status(200).json({
           type: decode.type,
           user,
-          message: "Marchent Found!",
+          message: "Marchent Found!"
         });
       }
     } else {
       res.status(400).json({
-        message: "No web token found!",
+        message: "No web token found!"
       });
     }
   } else {
     res.status(400).json({
-      message: "Invalid request method!",
+      message: "Invalid request method!"
     });
   }
 }

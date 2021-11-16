@@ -1,7 +1,7 @@
 import dbConnect from "../../../../server/db/dbconnect";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Marchent from "../../../../server/Schemas/Marchent";
+import vendorprofile from "../../../../server/Schemas/vendorprofile";
 import Customer from "../../../../server/Schemas/Customer";
 import cookie from "cookie";
 
@@ -35,7 +35,7 @@ export default async function handleLogin(req, res) {
     if (email && password && type) {
       if (type === "marchent") {
         try {
-          const getUser = await Marchent.findOne({ email }).select("+password");
+          const getUser = await vendorprofile.findOne({ email }).select("+password");
           if (!getUser)
             return res.status(400).json({ message: `User doesn't exist!` });
           const compare = await bcrypt.compare(password, getUser.password);

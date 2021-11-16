@@ -8,7 +8,7 @@ import { AuthContext } from "../GlobalContext/authContext";
 import { useRouter } from "next/router";
 import API from "../API";
 import useSWR from "swr";
-import { useUser } from "../GlobalContext/useuser";
+import { useUser, useValidate } from "../GlobalContext/useuser";
 
 const Header = ({ children }) => {
   const { data, isLoading, isError } = useUser("user", "/getuser", "GET");
@@ -16,8 +16,6 @@ const Header = ({ children }) => {
   const [headerClass, setHeaderClass] = useState(
     "container-fluid  bg-white border-bottom py-0 px-2 px-md-5 sticky-top"
   );
-
-  const { requestUser } = useContext(AuthContext);
 
   const Router = useRouter();
 
@@ -241,11 +239,17 @@ const Header = ({ children }) => {
 };
 
 const CategoryOffcanvas = ({ navbar }) => {
-  const { data, isLoading, isError } = useUser(
-    "categories",
-    "/categories",
-    "GET"
-  );
+
+  const {data, isLoading, isError} = useValidate({
+    method: "GET",
+    key: "categories",
+    url: "/categories",
+    revalidate: {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
+  })
   if (isError) {
     return (
       <div
@@ -416,9 +420,9 @@ const CategoryOffcanvas = ({ navbar }) => {
         <ul className="navbar-nav ps-3 py-3 mainCat" id="mainCat">
           {navbar.map((i, index) => (
             <li className="nav-item" key={index}>
-              <h6 className="nav-text">{i["category name"]}</h6>
+              <h6 className="nav-text ">{i["category name"]}</h6>
               <hr />
-              <ul className="ps-2">
+              <ul className="ps-2 mb-3">
                 {data.categoriesArr?.length > 0 &&
                   data.categoriesArr.map((category, index) => (
                     <Fragment key={index}>

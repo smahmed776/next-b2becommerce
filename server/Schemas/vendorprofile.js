@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
 const vendorprofileSchema = new mongoose.Schema({
-  vendorId: {
+  email: {
     type: String,
-    required: true
+    unique: true,
+    lowercase: true,
+    required: [true, "Email is required."]
   },
   username: {
     type: String,
@@ -11,8 +13,42 @@ const vendorprofileSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
+  password: {
+    type: String,
+    select: false
+  },
+  name: {
+    type: Object,
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    required: true
+  },
+  country: {
+    type: String
+  },
+  phone: {
+    type: Number,
+    required: true
+  },
   companyName: {
     type: String
+  },
+  businessType: {
+    type: String
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  clearance: {
+    type: String,
+    default: "marchent"
   },
   profile: {
     type: Object,
@@ -24,8 +60,7 @@ const vendorprofileSchema = new mongoose.Schema({
       social: {},
       home: {
         coverVideo: {
-          video:
-            "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
+          video: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
           thumbnail:
             "https://diypbx.com/wp-content/uploads/2016/02/video-placeholder.jpg"
         },

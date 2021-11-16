@@ -1,5 +1,4 @@
 import dbConnect from "../../../../server/db/dbconnect";
-import Marchent from "../../../../server/Schemas/Marchent";
 import Customer from "../../../../server/Schemas/Customer";
 import cookie from "cookie";
 import vendorprofile from "../../../../server/Schemas/vendorprofile";
@@ -37,14 +36,13 @@ export default async function getUser(req, res) {
         });
       }
       if (decode?.type === "marchent") {
-        const getMarchent = await Marchent.findById(decode.id);
-        const getvendorprofile = await vendorprofile.find({vendorId: decode.id})
+        const getMarchent = await vendorprofile.findById(decode.id);
         const user = {
           id: decode.id,
           name: `${getMarchent.name.firstName} ${getMarchent.name.lastName}`,
           email: getMarchent.email,
-          image: getvendorprofile[0].profile.image,
-          coverImage: getvendorprofile[0].profile.coverImage,
+          image: getMarchent.profile.image,
+          coverImage: getMarchent.profile.coverImage,
           country: getMarchent.country,
           type: decode.type,
           username: getMarchent.username

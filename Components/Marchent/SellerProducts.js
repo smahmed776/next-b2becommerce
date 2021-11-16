@@ -288,6 +288,13 @@ const SellerProducts = ({ show, user, datass }) => {
               Products on <span className="text-warning">SALE</span>{" "}
             </h5>
             <div className="border rounded bg-white p-1 p-lg-3">
+              {data.product.product.length === 0 && (
+                <div className="w-100 p-3" style={{height: "120px"}}>
+                  <p className="p-3 d-flex justify-content-center align-items-center">
+                    No Products Found!
+                  </p>
+                </div>
+              )}
               <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 gy-3 px-5 px-sm-0 m-0 w-100">
                 {data.product.product.length > 0 &&
                   data.product.product.map((product) => (
