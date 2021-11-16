@@ -9,7 +9,7 @@ const CompanyDetails = ({ product }) => {
     "username",
     "/username",
     "GET",
-    product.seller_id
+    product?.seller_id
   );
   const { Rating } = useContext(RatingContext);
 
