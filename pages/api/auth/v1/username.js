@@ -9,7 +9,7 @@ export default async function username(req, res) {
       const seller_id = authHeader && authHeader.split(" ")[1];
       if (seller_id) {
         const getVendorprofile = await vendorprofile.findOne({
-          vendorId: seller_id
+          _id: seller_id
         });
         res.status(200).json({
           username: getVendorprofile.username

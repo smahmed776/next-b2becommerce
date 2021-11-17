@@ -58,14 +58,14 @@ const ProductsPage = ({ product }) => {
                   />
                   <div className="p-0 p-sm-3">
                     {product &&
-                      product.images.length > 1 && product.images.map((image) => (
-                        <Slider
-                          slidesToShow={3}
-                          slidesToScroll={1}
-                          className="px-3"
-                          prevArrow={<PrevButton />}
-                          nextArrow={<NextButton />}
-                        >
+                    (<Slider
+                      slidesToShow={3}
+                      slidesToScroll={1}
+                      className="px-3"
+                      prevArrow={<PrevButton />}
+                      nextArrow={<NextButton />}
+                    >
+                      {product.images.length > 1 && product.images.map((image) => (
                           <div className=" p-1">
                             <div className="border rounded shadow-sm p-1">
                               <img
@@ -80,8 +80,9 @@ const ProductsPage = ({ product }) => {
                               />
                             </div>
                           </div>
-                        </Slider>
-                      ))}
+                          ))}
+                      </Slider>)
+                      }
                   </div>
                 </div>
 
