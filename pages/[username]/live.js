@@ -17,10 +17,13 @@ export default function live({ data }) {
 export async function getStaticProps({ params: { username } }) {
   await dbConnect();
   const getProducts = await vendorprofile.findOne({ username });
+  const { companyName, country } = getProducts;
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
   const live = JSON.stringify({
     image,
+    companyName,
+    country,
     coverImage,
     followers,
     level,

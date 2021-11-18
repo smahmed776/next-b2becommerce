@@ -20,9 +20,12 @@ export async function getStaticProps({ params: { username } }) {
     username
   });
 
+  const {companyName, country} = getProducts;
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
   const about = JSON.stringify({
     image,
+    companyName,
+    country,
     coverImage,
     followers,
     level,

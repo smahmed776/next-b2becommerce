@@ -3,7 +3,7 @@ import MarchentPage from "../../Components/Marchent/MarchentPage";
 import { AuthContext } from "../../Components/GlobalContext/authContext";
 import dbConnect from "../../server/db/dbconnect";
 import vendorprofile from "../../server/Schemas/vendorprofile";
-import categories from "../../server/Schemas/categories";
+
 
 export default function product({ data }) {
   const { customerInfo, marchentInfo } = useContext(AuthContext);
@@ -22,19 +22,21 @@ export default function product({ data }) {
 }
 
 export async function getStaticProps({ params: { username } }) {
-  await dbConnect()
+  await dbConnect();
   const getProducts = await vendorprofile.findOne({ username });
-  const getCategories = await categories.find();
-  const categoriesArr = getCategories.map((category) => category.name);
+
+  const { companyName, country } = getProducts;
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
   const product = JSON.stringify({
     image,
+    country,
+    companyName,
     coverImage,
     followers,
     level,
     Rating,
-    totalProducts: getProducts.profile.home.products.length,
+    totalProducts: getProducts.profile.home.products.length
   });
   const data = JSON.parse(product);
   if (!data) {
@@ -45,13 +47,13 @@ export async function getStaticProps({ params: { username } }) {
 
   return {
     props: { data }, // will be passed to the page component as props
-    revalidate: 10,
+    revalidate: 10
   };
 }
 
 export async function getStaticPaths(context) {
   await dbConnect();
-  console.log(context.query)
+  console.log(context.query);
   const getVendors = await vendorprofile.find();
   const vendors = getVendors.map((vendor) => vendor.username);
 

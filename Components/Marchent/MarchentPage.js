@@ -17,54 +17,6 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
   const homebtn = useRef();
   const history = useRouter();
 
-  const showMe = (e) => {
-    const text = e.target.dataset.bsText;
-    if (text === "about")
-      return (
-        setToshowAbout((prevState) => !prevState),
-        setToshowHome(false),
-        setToshowLive(false),
-        setToshowProduct(false),
-        aboutbtn.current.setAttribute("disabled", "true"),
-        homebtn.current.removeAttribute("disabled"),
-        livebtn.current.removeAttribute("disabled"),
-        productbtn.current.removeAttribute("disabled")
-      );
-    if (text === "product")
-      return (
-        setToshowProduct((prevState) => !prevState),
-        setToshowHome(false),
-        setToshowLive(false),
-        setToshowAbout(false),
-        productbtn.current.setAttribute("disabled", "true"),
-        homebtn.current.removeAttribute("disabled"),
-        livebtn.current.removeAttribute("disabled"),
-        aboutbtn.current.removeAttribute("disabled")
-      );
-    if (text === "home")
-      return (
-        setToshowHome((prevState) => !prevState),
-        setToshowAbout(false),
-        setToshowLive(false),
-        setToshowProduct(false),
-        homebtn.current.setAttribute("disabled", "true"),
-        productbtn.current.removeAttribute("disabled"),
-        livebtn.current.removeAttribute("disabled"),
-        aboutbtn.current.removeAttribute("disabled")
-      );
-    if (text === "live")
-      return (
-        setToshowLive((prevState) => !prevState),
-        setToshowHome(false),
-        setToshowProduct(false),
-        setToshowAbout(false),
-        livebtn.current.setAttribute("disabled", "true"),
-        homebtn.current.removeAttribute("disabled"),
-        productbtn.current.removeAttribute("disabled"),
-        aboutbtn.current.removeAttribute("disabled")
-      );
-  };
-
   useEffect(() => {
     if (toShowHome === true) {
       homebtn.current.setAttribute("disabled", "true");
@@ -136,7 +88,9 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Products</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
-                  <p className="text-center  m-0 p-lg-2 p-xl-0">{data.followers.length}</p>
+                  <p className="text-center  m-0 p-lg-2 p-xl-0">
+                    {data.followers.length}
+                  </p>
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Followers</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
@@ -151,7 +105,9 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
                   <p className="text-center bi bi-flag m-0  p-lg-2 p-xl-0"></p>
-                  <p className="text-center  m-0 p-lg-2 p-xl-0">Bangladesh</p>
+                  <p className="text-center  m-0 p-lg-2 p-xl-0" title={data.country}>
+                    {data.country}
+                  </p>
                 </div>
               </div>
             </div>
@@ -191,13 +147,13 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 }
               >
                 <Link passHref href={`/${history.query.username}/about`}>
-                  <button
+                  <a
                     ref={aboutbtn}
                     data-bs-text="about"
                     className="btn text-muted"
                   >
                     About
-                  </button>
+                  </a>
                 </Link>
               </li>
               <li
@@ -208,13 +164,13 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 }
               >
                 <Link passHref href={`/${history.query.username}/product`}>
-                  <button
+                  <a
                     ref={productbtn}
                     data-bs-text="product"
                     className="btn text-muted"
                   >
                     Product
-                  </button>
+                  </a>
                 </Link>
               </li>
               <li
@@ -225,13 +181,13 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 }
               >
                 <Link passHref href={`/${history.query.username}/home`}>
-                  <button
+                  <a
                     ref={homebtn}
                     data-bs-text="home"
                     className="btn text-muted"
                   >
                     Home page
-                  </button>
+                  </a>
                 </Link>
               </li>
               <li
@@ -242,13 +198,13 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 }
               >
                 <Link passHref href={`/${history.query.username}/live`}>
-                  <button
+                  <a
                     ref={livebtn}
                     data-bs-text="live"
                     className="btn text-muted"
                   >
                     Live Stream
-                  </button>
+                  </a>
                 </Link>
               </li>
               <li className="nav-item mt-2 mt-sm-0 px-3 px-sm-0 px-lg-2 px-xl-0">
@@ -265,15 +221,15 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
 
       {/* Components  */}
 
-      <About show={toShowAbout} user={user} data={data} />
-      <SellerProducts
+     {toShowAbout && <About show={toShowAbout} user={user} data={data} />}
+      {toShowProduct && <SellerProducts
         show={toShowProduct}
         user={user}
         datass={data}
         isFound={isFound}
-      />
-      <SellerHomepage show={toShowHome} user={user} data={data} />
-      <LiveStreams show={toShowLive} user={user} data={data} />
+      />}
+      {toShowHome && <SellerHomepage show={toShowHome} user={user} data={data} />}
+      {toShowLive && <LiveStreams show={toShowLive} user={user} data={data} />}
     </main>
   );
 };
