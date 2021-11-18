@@ -1,13 +1,11 @@
-import React, { Fragment, useContext, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import freeLogo from "../img/mlogo.png";
 import Link from "next/link";
 import { subHeaders, topHeaders } from "../dummydata/dummydata";
 import Navigation from "./Navigation";
-import { AuthContext } from "../GlobalContext/authContext";
 import { useRouter } from "next/router";
 import API from "../API";
-import useSWR from "swr";
 import { useUser, useValidate } from "../GlobalContext/useuser";
 
 const Header = ({ children }) => {
@@ -99,7 +97,7 @@ const Header = ({ children }) => {
       ]
     },
     {
-      "category name": "More on VideoTube",
+      "category name": "More on ImponExpo",
       items: [
         {
           name: "VideoTube Business",
@@ -239,8 +237,7 @@ const Header = ({ children }) => {
 };
 
 const CategoryOffcanvas = ({ navbar }) => {
-
-  const {data, isLoading, isError} = useValidate({
+  const { data, isLoading, isError } = useValidate({
     method: "GET",
     key: "categories",
     url: "/categories",
@@ -249,7 +246,7 @@ const CategoryOffcanvas = ({ navbar }) => {
       revalidateOnFocus: false,
       revalidateOnReconnect: false
     }
-  })
+  });
   if (isError) {
     return (
       <div
@@ -426,26 +423,35 @@ const CategoryOffcanvas = ({ navbar }) => {
                 {data.categoriesArr?.length > 0 &&
                   data.categoriesArr.map((category, index) => (
                     <Fragment key={index}>
-                      <Link
-                        passHref
-                        href={`/category/${category
-                          .toString()
-                          .replace(/\s+/g, "")
-                          .trim()}`}
+                      <button
+                        className="btn nav-link w-100 text-dark"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
                       >
-                        <a
-                          className="nav-link d-flex justify-content-between"
-                          role="button"
+                        <Link
+                          passHref
+                          href={`/category/${category
+                            .toString()
+                            .replace(/\s+/g, "-")
+                            .trim()}`}
                         >
-                          <span className="" style={{ pointerEvents: "none" }}>
-                            {category.toUpperCase()}
-                          </span>
-                          <span
-                            className="bi bi-chevron-right text-dark "
-                            style={{ pointerEvents: "none" }}
-                          ></span>
-                        </a>
-                      </Link>
+                          <a
+                            className="nav-link d-flex justify-content-between"
+                            role="button"
+                          >
+                            <span
+                              className=""
+                              style={{ pointerEvents: "none" }}
+                            >
+                              {category.toUpperCase()}
+                            </span>
+                            <span
+                              className="bi bi-chevron-right text-dark "
+                              style={{ pointerEvents: "none" }}
+                            ></span>
+                          </a>
+                        </Link>
+                      </button>
                     </Fragment>
                   ))}
               </ul>

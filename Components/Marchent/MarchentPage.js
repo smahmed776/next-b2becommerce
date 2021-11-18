@@ -80,7 +80,7 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
   return (
     <main className="px-0 px-sm-5 my-3">
       <div className="row row-cols-1 m-0 gy-3 gy-lg-0 w-100  bg-white">
-        <div className="col p-0">
+        <div className="col p-0 mb-5 mb-lg-0">
           <div className="cover position-relative">
             {data && (
               <img
@@ -92,25 +92,34 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
               />
             )}
             <div
-              className="w-100 d-flex justify-content-center position-absolute"
+              className="w-100 d-flex  flex-column justify-content-center position-absolute"
               style={{ bottom: "-55px" }}
             >
-              <div
-                className="rounded-pill p-2 bg-white"
-                style={{ height: "120px", width: "120px", overflow: "hidden" }}
-              >
-                {data && (
-                  <img
-                    src={data.image}
-                    alt=""
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                      borderRadius: "50%"
-                    }}
-                  />
-                )}
+              <div className="d-flex justify-content-center">
+                <div
+                  className="rounded-pill p-2 bg-white d-flex justify-content-center"
+                  style={{
+                    height: "120px",
+                    width: "120px",
+                    overflow: "hidden"
+                  }}
+                >
+                  {data && (
+                    <img
+                      src={data.image}
+                      alt=""
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "50%"
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="d-flex justify-content-center">
+                <span>{data.companyName}</span>
               </div>
             </div>
           </div>
@@ -127,7 +136,7 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Products</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
-                  <p className="text-center  m-0 p-lg-2 p-xl-0">1.5k</p>
+                  <p className="text-center  m-0 p-lg-2 p-xl-0">{data.followers.length}</p>
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Followers</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">

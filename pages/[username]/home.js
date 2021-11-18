@@ -1,24 +1,8 @@
-import { useRouter } from "next/router";
 import MarchentPage from "../../Components/Marchent/MarchentPage";
-import { Server_URL } from "../../config/config";
 import dbConnect from "../../server/db/dbconnect";
 import vendorprofile from "../../server/Schemas/vendorprofile";
 
 export default function home({ data }) {
-  // const router = useRouter();
-  // const { item } = router.query;
-  // if (item === "about") {
-  //   return (
-  //     <MarchentPage
-  //       data={data.about}
-  //       home={false}
-  //       about={true}
-  //       product={false}
-  //       live={false}
-  //     />
-  //   );
-  // }
-
   return (
     <MarchentPage
       data={data}
@@ -28,33 +12,12 @@ export default function home({ data }) {
       live={false}
     />
   );
-  // if (item === "product") {
-  //   return (
-  //     <MarchentPage
-  //       data={data.product}
-  //       home={false}
-  //       about={false}
-  //       product={true}
-  //       live={false}
-  //     />
-  //   );
-  // }
-  // if (item === "live") {
-  //   return (
-  //     <MarchentPage
-  //       data={data.live}
-  //       home={false}
-  //       about={false}
-  //       product={false}
-  //       live={true}
-  //     />
-  //   );
-  // }
 }
 
 export async function getStaticProps({ params: { username } }) {
   await dbConnect();
   const getProducts = await vendorprofile.findOne({ username });
+  const {companyName, country} = getProducts;
 
   const { image, coverImage, followers, level, Rating } = getProducts.profile;
   const home = JSON.stringify({
@@ -63,8 +26,10 @@ export async function getStaticProps({ params: { username } }) {
     followers,
     level,
     Rating,
+    country,
     totalProducts: getProducts.profile.home.products.length,
-    home: getProducts.profile.home || {}
+    home: getProducts.profile.home || {},
+    companyName
   });
   const data = JSON.parse(home);
   if (!data) {
