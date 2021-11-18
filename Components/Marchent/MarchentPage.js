@@ -71,7 +71,7 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <span>{data.companyName}</span>
+                <span>{data?.companyName}</span>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
                   <p className="text-center  m-0 p-lg-2 p-xl-0">
-                    {data.followers.length}
+                    {data?.followers.length}
                   </p>
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Followers</p>
                 </div>
@@ -105,8 +105,8 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
                   <p className="text-center bi bi-flag m-0  p-lg-2 p-xl-0"></p>
-                  <p className="text-center  m-0 p-lg-2 p-xl-0" title={data.country}>
-                    {data.country}
+                  <p className="text-center  m-0 p-lg-2 p-xl-0" title={data?.country}>
+                    {data?.country}
                   </p>
                 </div>
               </div>
