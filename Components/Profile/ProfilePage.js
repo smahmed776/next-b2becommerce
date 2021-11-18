@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import API from "../API";
+import Link from 'next/link'
 
 const ProfilePage = ({ user }) => {
   const { data: session } = useSession();
@@ -13,6 +14,10 @@ const ProfilePage = ({ user }) => {
             <div className="col-12 border-top border-start border-end bg-light p-3">
               {session && <p className="m-0">Hi, {session.user.name}</p>}
               {user && <p className="m-0">Hi, {user.name}</p>}
+            </div>
+            <hr className="m-0" />
+            <div className="col-12 border-top border-start border-end bg-light p-3">
+              {user && user.type === 'marchent' && <Link href={`/${user.username}/home`} className="m-0">Go to store</Link>}
             </div>
             <hr className="m-0" />
 

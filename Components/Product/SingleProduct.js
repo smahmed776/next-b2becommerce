@@ -28,9 +28,9 @@ const SingleProduct = ({ imageText, name, id, rating, price }) => {
                                 <p className="my-1 text-danger">{price}</p>
                             </div>
                             <div className="col p-0">
-                                <div className="mt-1 mb-2">
+                                {rating > 0 && <div className="mt-1 mb-2">
                                     {Rating(parseInt(rating))}
-                                </div>
+                                </div>}
                             </div>
                         </a>
                     </Link>

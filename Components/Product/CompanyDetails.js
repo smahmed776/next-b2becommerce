@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Slider from "react-slick";
 import { RatingContext } from "../GlobalContext/RatingContext";
 import { useUser } from "../GlobalContext/useuser";
@@ -12,14 +12,26 @@ const CompanyDetails = ({ product }) => {
     product?.seller_id
   );
   const { Rating } = useContext(RatingContext);
+  const companydetailRef = useRef();
+  const productdetailRef = useRef();
+  const productdetailbtn = useRef();
+  const companydetailbtn = useRef();
 
-  const img = [
-    "https://m.media-amazon.com/images/I/41GhMomXvqL.jpg",
-    "https://m.media-amazon.com/images/I/51mPvLjZOKL.jpg",
-    "https://m.media-amazon.com/images/I/51dfQ7+-aVL.jpg",
-    "https://m.media-amazon.com/images/I/51LttGIz-KL.jpg"
-  ];
-
+  const handleClick = (e) => {
+    e.target.setAttribute("disabled", true);
+    const btn = e.target.dataset.bsId;
+    if (btn === "companydetail") {
+      productdetailbtn.current.removeAttribute("disabled");
+      companydetailRef.current.classList.remove("d-none");
+      productdetailRef.current.classList.add("d-none");
+    }
+    if (btn === "productdetail") {
+      companydetailbtn.current.removeAttribute("disabled");
+      productdetailRef.current.classList.remove("d-none");
+      companydetailRef.current.classList.add("d-none");
+    }
+  };
+  const img = ["as", "ak", "kd", "dk", "su", "ss"];
   const PrevButton = (props) => {
     const { onClick } = props;
     return (
@@ -61,17 +73,28 @@ const CompanyDetails = ({ product }) => {
             className="d-flex justify-content-start"
             style={{ marginTop: "-1.5rem" }}
           >
-            <button className="btn btn-secondary text-light cdetail-h6 p-2 ms-2">
+            <button
+              className="btn btn-secondary text-light cdetail-h6 p-2 ms-2"
+              data-bs-id="productdetail"
+  
+              ref={productdetailbtn}
+              onClick={(e) => handleClick(e)}
+            >
               Product Details
             </button>
-            <button className="btn btn-primary text-white cdetail-h6 p-2 ms-2">
+            <button
+              className="btn btn-primary text-white cdetail-h6 p-2 ms-2"
+              data-bs-id="companydetail"
+              ref={companydetailbtn}
+              onClick={(e) => handleClick(e)}
+            >
               Company Details
             </button>
           </div>
 
           {/* product details  */}
 
-          <div className="row row-cols-1 gy-2 w-100 m-0">
+          <div className="row row-cols-1 gy-2 w-100 m-0" ref={productdetailRef}>
             <div className="col d-flex justify-content-between p-0">
               <h6 className="text-muted p-3 d-inline col-8 col-md-9">
                 Product details of {product && product.name}
@@ -103,18 +126,26 @@ const CompanyDetails = ({ product }) => {
 
           {/* company details  */}
 
-          <div className="row row-cols-1 gy-2 w-100 m-0 d-none">
+          <div
+            className="row row-cols-1 gy-2 w-100 m-0 d-none"
+            ref={companydetailRef}
+          >
             <div className="col d-flex justify-content-between p-0">
               <h6 className="text-muted p-3 d-inline">Company Album</h6>
-              <button
-                className="btn h-75 btn-warning text-white cdetail-btn"
-                style={{
-                  borderTopRightRadius: "0",
-                  borderBottomRightRadius: "0"
-                }}
-              >
-                Go To Store
-              </button>
+              {data && (
+                <Link href={`/${data.username}/product`}>
+                  <a
+                    className="text-center d-flex justify-content-center align-items-center col-4 col-md-3 bg-warning text-white cdetail-btn"
+                    style={{
+                      height: "38px",
+                      borderTopRightRadius: "0",
+                      borderBottomRightRadius: "0"
+                    }}
+                  >
+                    Go To Store
+                  </a>
+                </Link>
+              )}
             </div>
 
             <div className="col px-3">

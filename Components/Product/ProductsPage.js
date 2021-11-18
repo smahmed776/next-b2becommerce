@@ -66,7 +66,7 @@ const ProductsPage = ({ product }) => {
                       nextArrow={<NextButton />}
                     >
                       {product.images.length > 1 && product.images.map((image) => (
-                          <div className=" p-1">
+                          <div className=" p-1" key={image}>
                             <div className="border rounded shadow-sm p-1">
                               <img
                                 onClick={(e) =>

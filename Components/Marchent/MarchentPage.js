@@ -82,13 +82,15 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
       <div className="row row-cols-1 m-0 gy-3 gy-lg-0 w-100  bg-white">
         <div className="col p-0">
           <div className="cover position-relative">
-           { data &&  (<img
-              src={data.coverImage}
-              height="235px"
-              width="100%"
-              alt=""
-              className=""
-            />)}
+            {data && (
+              <img
+                src={data.coverImage}
+                height="235px"
+                width="100%"
+                alt=""
+                className=""
+              />
+            )}
             <div
               className="w-100 d-flex justify-content-center position-absolute"
               style={{ bottom: "-55px" }}
@@ -97,16 +99,18 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                 className="rounded-pill p-2 bg-white"
                 style={{ height: "120px", width: "120px", overflow: "hidden" }}
               >
-{data && (               <img
-                  src={data.image}
-                  alt=""
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "cover",
-                    borderRadius: "50%"
-                  }}
-                />)}
+                {data && (
+                  <img
+                    src={data.image}
+                    alt=""
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                      borderRadius: "50%"
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -117,7 +121,9 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
             <div className="col-12  col-lg-5 justify-selt-start profile-stats">
               <div className="d-flex justify-content-evenly p-2 p-lg-0 p-xl-2 pe-0 flex-wrap pe-md-0">
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
-                  <p className="text-center  m-0 p-lg-2 p-xl-0">{data?.totalProducts}</p>
+                  <p className="text-center  m-0 p-lg-2 p-xl-0">
+                    {data?.totalProducts}
+                  </p>
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Products</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
@@ -125,7 +131,9 @@ const MarchentPage = ({ user, home, about, product, live, data, isFound }) => {
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Followers</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
-                  <p className="text-center  m-0 p-lg-2 p-xl-0">{data?.level}</p>
+                  <p className="text-center  m-0 p-lg-2 p-xl-0">
+                    {data?.level}
+                  </p>
                   <p className="text-center  m-0 p-lg-2 p-xl-0">Level</p>
                 </div>
                 <div className=" d-flex justify-content-center flex-column p-2 m-0 p-sm-3 p-lg-0 p-xl-3">
