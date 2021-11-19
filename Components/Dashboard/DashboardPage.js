@@ -7,7 +7,6 @@ import { useUser } from "../GlobalContext/useuser";
 const DashboardPage = ({ user }) => {
   const { data: session } = useSession();
   const { data } = useUser("marchent", "/allusers", "GET");
-  console.log(data);
   return (
     <div className=" p-0 py-4 p-sm-5 ">
       <div className="row gy-4 m-0 w-100">
@@ -175,7 +174,7 @@ const DashboardPage = ({ user }) => {
                           <td>{index}</td>
                           <td>{user._id}</td>
                           <td>{user.email}</td>
-                          <td>{user.name}</td>
+                          <td>{`${user.name.firstName} ${user.name.lastName}`}</td>
                           <td>{user.phone}</td>
                         </tr>
                       ))}
