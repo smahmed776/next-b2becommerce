@@ -174,6 +174,11 @@ const Navigation = ({ mobile, session, user, isLoading, isError }) => {
               </Link>
             </li>
             <li>
+              <Link href="/dashboard" passHref>
+                <a className="dropdown-item">Dashboard</a>
+              </Link>
+            </li>
+            <li>
               <button onClick={() => logout()} className="dropdown-item">
                 Log Out
               </button>

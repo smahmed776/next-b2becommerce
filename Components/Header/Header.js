@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import freeLogo from "../img/mlogo.png";
 import Link from "next/link";
-import { subHeaders, topHeaders } from "../dummydata/dummydata";
+import { subHeaders, topHeaders, navbar } from "../dummydata/dummydata";
 import Navigation from "./Navigation";
 import { useRouter } from "next/router";
 import API from "../API";
@@ -16,109 +16,6 @@ const Header = ({ children }) => {
   );
 
   const Router = useRouter();
-
-  const navbar = [
-    {
-      "category name": "Most Popular",
-
-      items: [
-        {
-          name: "Web development",
-          id: "WebDevelopment",
-          items: [
-            "Javascript",
-            "AngularJs",
-            "React",
-            "Css",
-            "Node Js",
-            "Vue Js",
-            "Django"
-          ]
-        },
-        {
-          name: "Mobile development",
-          id: "Mobiledevelopment",
-          items: [
-            "Andriod developnemt",
-            "Ios development",
-            "Google flutter",
-            "Swift",
-            "React native",
-            "Kotlin"
-          ]
-        },
-        {
-          name: "Game development",
-          id: "Gamedevelopment",
-          items: [
-            "Unity",
-            "Unreal engine",
-            "C#",
-            "Java",
-            "C++",
-            "2D Mobile game development"
-          ]
-        },
-        {
-          name: "Enterpreneurship",
-          id: "Enterpreneurship",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Business Analytics & Intelligence",
-          id: "BusinessAnalytics&Intelligence",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Digital marketing",
-          id: "Digitalmarketing",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Graphic design & illustration",
-          id: "Graphicdesign&illustration",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "IT certification",
-          id: "ITcertification",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Personal Transformation",
-          id: "PersonalTransformation",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "All categories",
-          id: "Allcategories",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        }
-      ]
-    },
-    {
-      "category name": "More on ImponExpo",
-      items: [
-        {
-          name: "VideoTube Business",
-
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Get the app",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Invite friends",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        },
-        {
-          name: "Help",
-          items: ["Business", "Freelancing", "Startup", "Blogging"]
-        }
-      ]
-    }
-  ];
 
   const handleClick = (e) => {
     // document.getElementById('mainCat').style.visibility= "hidden";
@@ -228,6 +125,16 @@ const Header = ({ children }) => {
                 </Link>
               </li>
             ))}
+{isError &&            <li className="nav-item flex-fill me-2 p-1" >
+                <Link href="/login" passHref>
+                  <button className="btn btn-outline-primary">Login</button>
+                </Link>
+              </li>}
+{isError &&            <li className="nav-item flex-fill me-2 p-1" >
+                <Link href="/signup" passHref>
+                  <button className="btn btn-primary">Sign Up</button>
+                </Link>
+              </li>}
           </ul>
         </nav>
       </div>
@@ -811,62 +718,116 @@ const NavOffcanvas = ({ isLoading, isError, user }) => {
           <hr />
           <div className="row row-cols-2 gx-3 gy-3 my-2 px-3">
             <div className="col">
-              <a
-                role="button"
-                className="text-dark"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasCollapse"
-                aria-controls="offcanvasCollapse"
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
               >
-                <div className="d-flex flex-column align-items-center bg-white border p-2">
-                  <span className="bi bi-justify"></span>
-                  <p> Categories</p>
-                </div>
-              </a>
+                <a
+                  role="button"
+                  className="text-dark"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasCollapse"
+                  aria-controls="offcanvasCollapse"
+                >
+                  <div className="d-flex flex-column align-items-center bg-white border p-2">
+                    <span className="bi bi-justify"></span>
+                    <p> Categories</p>
+                  </div>
+                </a>
+              </button>
             </div>
             <div className="col">
-              <Link
-                href="/notification"
-                passHref
-                style={{ textDecoration: "none" }}
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
               >
-                <a className="text-dark">
-                  <div className="d-flex flex-column align-items-center bg-white border p-2">
-                    <span className="bi bi-bell"></span>
-                    <p>Notification</p>
-                  </div>
-                </a>
-              </Link>
+                <Link href="/dashboard" passHref>
+                  <a role="button" className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-justify"></span>
+                      <p> Dashboard </p>
+                    </div>
+                  </a>
+                </Link>
+              </button>
             </div>
             <div className="col">
-              <Link href="/offers" style={{ textDecoration: "none" }} passHref>
-                <a className="text-dark">
-                  <div className="d-flex flex-column align-items-center bg-white border p-2">
-                    <span className="bi bi-megaphone"></span>
-                    <p>My offers</p>
-                  </div>
-                </a>
-              </Link>
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <Link
+                  href="/notification"
+                  passHref
+                  style={{ textDecoration: "none" }}
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-bell"></span>
+                      <p>Notification</p>
+                    </div>
+                  </a>
+                </Link>
+              </button>
             </div>
             <div className="col">
-              <Link passHref href="/cart" style={{ textDecoration: "none" }}>
-                <a className="text-dark">
-                  <div className="d-flex flex-column align-items-center bg-white border p-2">
-                    <span className="bi bi-cart4"></span>
-                    <p> Cart</p>
-                  </div>
-                </a>
-              </Link>
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <Link
+                  href="/offers"
+                  style={{ textDecoration: "none" }}
+                  passHref
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-megaphone"></span>
+                      <p>My offers</p>
+                    </div>
+                  </a>
+                </Link>
+              </button>
             </div>
             <div className="col">
-              <Link href="/message" passHref style={{ textDecoration: "none" }}>
-                <a className="text-dark">
-                  <div className="d-flex flex-column align-items-center bg-white border p-2">
-                    <span className="bi bi-chat"></span>
-                    <p>My Inbox</p>
-                  </div>
-                </a>
-              </Link>
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <Link passHref href="/cart" style={{ textDecoration: "none" }}>
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-cart4"></span>
+                      <p> Cart</p>
+                    </div>
+                  </a>
+                </Link>
+              </button>
+            </div>
+            <div className="col">
+              <button
+                className="btn w-100"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <Link
+                  href="/message"
+                  passHref
+                  style={{ textDecoration: "none" }}
+                >
+                  <a className="text-dark">
+                    <div className="d-flex flex-column align-items-center bg-white border p-2">
+                      <span className="bi bi-chat"></span>
+                      <p>My Inbox</p>
+                    </div>
+                  </a>
+                </Link>
+              </button>
             </div>
           </div>
 
